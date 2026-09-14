@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big decisions: vocabulary trainer (Think 3, Unit 1)</title>
+<style>
+:root{
+  --ink:#1C2B4A; --tile:#26395C; --amber:#F5B82E; --paper:#FFFEFA; --bg:#DDE4EE;
+  --line:#B6C1D2; --muted:#56617A; --ok:#1C7F53; --okbg:#E1F2E8; --bad:#B9382F; --badbg:#F8E3E0;
+  --display:"Avenir Next Condensed","Roboto Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 var(--body);-webkit-text-size-adjust:100%}
+button{font-family:inherit}
+
+/* Board header */
+header{background:var(--ink);color:#fff;padding:22px 16px 0}
+.wrap{max-width:560px;margin:0 auto}
+h1.board{margin:0;display:flex;flex-direction:column;gap:4px}
+.board .line{display:flex;gap:3px}
+.tile{position:relative;display:inline-grid;place-items:center;width:clamp(26px,8.2vw,44px);height:clamp(36px,11vw,58px);
+  background:var(--tile);border-radius:4px;color:var(--amber);font:700 clamp(22px,7vw,38px)/1 var(--display);font-stretch:condensed}
+.tile::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.45)}
+.sub{margin:10px 0 14px;color:#C6CFE0;font-size:15px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:1 1 0;min-width:0;background:transparent;border:0;color:#C6CFE0;font-weight:600;font-size:15px;
+  padding:12px 4px 14px;border-radius:10px 10px 0 0;cursor:pointer;white-space:nowrap}
+@media (max-width:420px){nav.tabs button{flex:1 1 auto}}
+@media (max-width:360px){nav.tabs{gap:0}nav.tabs button{font-size:14px;padding:12px 3px 14px}}
+nav.tabs button[aria-selected="true"]{background:var(--bg);color:var(--ink)}
+
+main{max-width:560px;margin:0 auto;padding:18px 16px 56px}
+.meta{margin:10px 0 14px;color:var(--muted);font-size:15px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--amber);transition:width .3s}
+
+/* Buttons */
+.btn{min-height:48px;padding:12px 16px;border-radius:12px;border:2px solid var(--ink);background:transparent;color:var(--ink);
+  font-weight:600;font-size:16px;cursor:pointer}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.quiet{border-color:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.btn:disabled{opacity:.45;cursor:default}
+.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.actions .btn{flex:1 1 auto}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+/* Ticket card */
+.ticket{perspective:1400px;cursor:pointer;border-radius:16px}
+.ticket-inner{display:grid;transition:transform .5s ease;transform-style:preserve-3d}
+.ticket.flipped .ticket-inner{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--paper);border-radius:16px;
+  padding:20px 20px 0;display:flex;flex-direction:column;min-height:300px;box-shadow:0 2px 0 var(--line)}
+.back{transform:rotateY(180deg)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--muted)}
+.tag-up{background:var(--amber);color:var(--ink);border-radius:6px;padding:0 8px;font-weight:600}
+.phrase{margin:22px 0 8px;font:700 clamp(36px,10vw,50px)/1.05 var(--display);font-stretch:condensed;
+  text-decoration:underline;text-decoration-color:var(--amber);text-decoration-thickness:6px;text-underline-offset:6px;text-decoration-skip-ink:none}
+.form{margin:8px 0 0;color:var(--muted);font-size:16px}
+.back-title{margin:0 0 2px !important;font-size:15px;color:var(--muted)}
+.meaning{margin:0 0 14px !important;font-size:20px;font-weight:650;line-height:1.35}
+.back p{margin:0 0 12px}
+.back ul{margin:0 0 12px;padding-left:18px}
+.back li{margin-bottom:4px}
+.lbl{display:block;font-size:13px;color:var(--muted)}
+.back b{background:linear-gradient(transparent 60%,rgba(245,184,46,.55) 60%)}
+.stub{position:relative;margin:auto -20px 0 !important;padding:12px 20px 14px;border-top:2px dashed var(--line);color:var(--muted);font-size:14px}
+.stub::before,.stub::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg)}
+.stub::before{left:-10px}.stub::after{right:-10px}
+
+/* Match */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{min-height:44px;padding:8px 14px;border-radius:22px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-weight:600;font-size:16px;cursor:pointer}
+.chip.sel{background:var(--amber)}
+.chip.done{background:var(--okbg);border-color:var(--ok);color:var(--ok);cursor:default;text-decoration:line-through}
+.defs{display:grid;gap:8px}
+.def-btn{text-align:left;min-height:48px;padding:12px 14px;border-radius:12px;border:2px solid transparent;background:var(--paper);color:var(--ink);font-size:16px;cursor:pointer}
+.def-btn.done{background:var(--okbg);border-color:var(--ok);cursor:default}
+.def-btn.done b{display:block;color:var(--ok);margin-top:2px}
+.def-btn.wrong{border-color:var(--bad);background:var(--badbg);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* Quiz */
+.q-card{background:var(--paper);border-radius:16px;padding:20px;box-shadow:0 2px 0 var(--line)}
+.sentence{margin:0;font-size:20px;line-height:1.55}
+.gap{display:inline-block;min-width:90px;border-bottom:3px solid var(--ink);line-height:1.2}
+.gap.filled{min-width:0;border-bottom-color:var(--ok);color:var(--ok);font-weight:700;padding:0 2px}
+.cue{margin:10px 0 0;color:var(--muted);font-size:16px}
+.options{display:grid;gap:8px;margin-top:14px}
+@media (min-width:520px){.options{grid-template-columns:1fr 1fr}}
+.opt{min-height:52px;padding:10px 14px;border-radius:12px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-size:17px;font-weight:600;cursor:pointer;text-align:left}
+.opt.right{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.wrongpick{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.opt:disabled{cursor:default}
+.fb{margin:14px 0 0;padding:12px 14px;border-radius:12px;font-size:16px}
+.fb.ok{background:var(--okbg)}
+.fb.no{background:var(--badbg)}
+.fb.note{background:var(--paper);color:var(--muted)}
+.answer{width:100%;margin-top:14px;min-height:52px;padding:10px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-size:18px}
+.answer.ok{border-color:var(--ok);background:var(--okbg)}
+.answer.no{border-color:var(--bad);background:var(--badbg)}
+.hint{margin:10px 0 0;font-size:18px;letter-spacing:.08em;color:var(--ink)}
+
+/* Summary */
+.summary{background:var(--paper);border-radius:16px;padding:22px 20px;box-shadow:0 2px 0 var(--line);margin-top:14px}
+.summary h2{margin:0 0 6px;font:700 34px/1.1 var(--display);font-stretch:condensed}
+.summary p{margin:0 0 10px}
+.summary ul{margin:6px 0 0;padding-left:20px}
+.summary li{margin-bottom:4px}
+
+@media (prefers-reduced-motion: reduce){
+  .ticket-inner,.bar span{transition:none}
+  .def-btn.wrong{animation:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1 class="board" id="board" aria-label="Big decisions"></h1>
+    <p class="sub">Think 3, Unit 1. Key words and phrases from the texts</p>
+    <nav class="tabs" role="tablist" aria-label="Practice modes">
+      <button role="tab" data-mode="cards" aria-selected="true">Cards</button>
+      <button role="tab" data-mode="match" aria-selected="false">Match</button>
+      <button role="tab" data-mode="choose" aria-selected="false">Choose</button>
+      <button role="tab" data-mode="write" aria-selected="false">Write</button>
+    </nav>
+  </div>
+</header>
+<main id="app" aria-live="polite"></main>
+
+<script>
+/*
+  en: phrase | up: phrase with "up" | who: person in the text | form: pattern
+  meaning: full simple explanation | short: short meaning (Match, Write)
+  use: how to use it | ex: two examples ([[ ]] = highlight) | rel: similar / opposite
+  tip: feedback note | mc: [sentence, answer, distractors] | wr: [sentence, accepted answers]
+*/
+const DATA = [
+ {en:"take up", up:true, who:"Mark", form:"take up + a hobby / -ing; past: took up",
+  meaning:"to start doing a new hobby, sport or activity, usually because you enjoy it",
+  short:"to start a new hobby or sport",
+  use:"We often use it for free-time activities: take up yoga, take up the guitar. The past form is took up.",
+  ex:["My dad [[took up]] running last year.","I'd like to [[take up]] photography."],
+  rel:"Opposite: give up",
+  tip:"Take up = start a hobby. Give up = stop it.",
+  mc:["My sister ___ tennis last summer, and now she plays every weekend.","took up",["gave up","saved up","ran out"]],
+  wr:["Last year I ___ swimming, and now I go to the pool twice a week.",["took up"]]},
+
+ {en:"a couple of", up:false, who:"Mark", form:"a couple of + plural noun",
+  meaning:"two, or a small number of people or things",
+  short:"two, or a small number",
+  use:"People often use it when they don't know the exact number. Always use a plural noun after it: a couple of days, a couple of friends.",
+  ex:["I'll be back in [[a couple of]] hours.","She visited us [[a couple of]] years ago."],
+  rel:"Similar: a few",
+  tip:"After a couple of, use a plural noun: a couple of days.",
+  mc:["It's a short book. I read it in ___ days.","a couple of",["perhaps","on the other hand","life-changing"]],
+  wr:["Can you wait ___ minutes? I'm almost ready.",["a couple of"]]},
+
+ {en:"change your ways", up:false, who:"Mark", form:"change my / your / his / her ways",
+  meaning:"to stop your bad habits or bad behaviour and start behaving in a better way",
+  short:"to stop bad habits and start behaving better",
+  use:"Ways is always plural, and we use my, your, his, her or their before it: He changed his ways.",
+  ex:["He was lazy at school, but then he [[changed his ways]].","If you want better marks, you need to [[change your ways]]."],
+  rel:"",
+  tip:"It's always ways (plural): I've changed my ways.",
+  mc:["Tom used to eat junk food every day, but he has ___ and now he cooks healthy meals.","changed his ways",["run out","had the courage","taken a year off"]],
+  wr:["You're always late for school. You need to ___!",["change your ways"]]},
+
+ {en:"get into the habit of", up:false, who:"Mark", form:"get into the habit of + -ing",
+  meaning:"to start doing something regularly, so it becomes a normal part of your life",
+  short:"to start doing something regularly",
+  use:"After of, use a verb with -ing: get into the habit of reading. It can be about good or bad habits.",
+  ex:["Try to [[get into the habit of]] reading every day.","I've [[got into the habit of]] checking my phone too often."],
+  rel:"Opposite: get out of the habit of",
+  tip:"Use a verb with -ing after of: the habit of drinking water.",
+  mc:["I want to ___ drinking more water every day.","get into the habit of",["take the chance","keep an open mind","intend"]],
+  wr:["Since September I've ___ going to bed early.",["got into the habit of","gotten into the habit of"]]},
+
+ {en:"keep an open mind", up:false, who:"Pauline", form:"keep an open mind (about something)",
+  meaning:"to be ready to listen to new or different ideas and not decide too quickly what you think",
+  short:"to be ready to hear new ideas before you decide",
+  use:"It's a fixed phrase, so don't change the words. A person who does this is open-minded.",
+  ex:["[[Keep an open mind]]. You might like the new club.","I'm [[keeping an open mind]] about the new teacher."],
+  rel:"Similar: be open-minded",
+  tip:"It's a fixed phrase: keep an open mind. The adjective is open-minded.",
+  mc:["You say you don't like Thai food, but you've never tried it. ___!","Keep an open mind",["Take a year off","Save up","Run out"]],
+  wr:["It's a new teacher, so try to ___.",["keep an open mind"]]},
+
+ {en:"have the courage", up:false, who:"Pauline", form:"have the courage + to do something",
+  meaning:"to be brave enough to do something that is difficult or a little scary",
+  short:"to be brave enough to do something",
+  use:"After courage, use to + verb. If you didn't have the courage, you were too scared to do it.",
+  ex:["I finally [[had the courage]] to ask a question in class.","She didn't [[have the courage]] to tell him the truth."],
+  rel:"Similar: be brave enough to",
+  tip:"have the courage + to + verb.",
+  mc:["I wanted to sing on stage, but I didn't ___.","have the courage",["get bored","study further","take up"]],
+  wr:["He didn't ___ to jump into the cold lake.",["have the courage"]]},
+
+ {en:"give up", up:true, who:"Pauline", form:"give up + noun / -ing; past: gave up",
+  meaning:"to stop doing something, often something you have done for a long time",
+  short:"to stop doing something",
+  use:"Use a noun (give up football) or -ing (give up eating sweets). The past form is gave up. Don't give up! means don't stop trying.",
+  ex:["He [[gave up]] football because of his knee.","Don't [[give up]] English. You're doing well!"],
+  rel:"Opposite: take up",
+  tip:"Give up = stop. Take up = start.",
+  mc:["She ___ piano lessons because she had no free time.","gave up",["took up","saved up","struggled with"]],
+  wr:["My grandad ___ eating sugar ten years ago.",["gave up"]]},
+
+ {en:"intend to", up:false, who:"Pauline", form:"intend + to do; be intending to do",
+  meaning:"to plan or want to do something in the future",
+  short:"to plan to do something",
+  use:"After intend, use to + verb. It sounds a little more serious than be going to.",
+  ex:["I [[intend to]] start a new hobby this year.","We weren't [[intending to]] stay so long."],
+  rel:"Similar: plan to, be going to",
+  tip:"intend + to + verb: I intend to study law.",
+  mc:["We ___ to visit our grandparents this summer.","intend",["keep","run out","give up"]],
+  wr:["What do you ___ to do after school?",["intend"]]},
+
+ {en:"take the chance", up:false, who:"Pauline", form:"take the chance + to do something",
+  meaning:"to use a good opportunity when you get it, even if you are not sure what will happen",
+  short:"to use a good opportunity when it comes",
+  use:"After chance, use to + verb: take the chance to travel.",
+  ex:["If you can study abroad, [[take the chance]]!","He [[took the chance]] to learn Spanish in Madrid."],
+  rel:"Similar: take the opportunity",
+  tip:"take the chance + to + verb = use a good opportunity.",
+  mc:["My school offered a free trip to London, so I ___ to improve my English.","took the chance",["gave up","ran out","got bored"]],
+  wr:["They invited me to join the school band, and I ___ to try.",["took the chance"]]},
+
+ {en:"time is up", up:true, who:"John", form:"my / your time is up; Time's up!",
+  meaning:"there is no more time; the time for something has finished or will finish soon",
+  short:"there is no more time left",
+  use:"Here up means finished. Teachers often say Time's up! at the end of a test. My time at school is almost up means school will finish for me soon.",
+  ex:["Stop writing, please. [[Time's up]]!","Our holiday [[time is]] almost [[up]]. We go home on Sunday."],
+  rel:"",
+  tip:"Here up means finished: Time's up!",
+  mc:["Put your pens down, please. Time's ___!","up",["off","on","in"]],
+  wr:["Stop writing and give me your tests, please. ___!",["time's up","time is up"]]},
+
+ {en:"perhaps", up:false, who:"John", form:"Perhaps + sentence",
+  meaning:"maybe; you use it when something is possible, but you are not sure",
+  short:"maybe; it's possible",
+  use:"It often comes at the start of a sentence. It sounds a little more formal than maybe.",
+  ex:["[[Perhaps]] I'll go to university in another city.","[[Perhaps]] you're right."],
+  rel:"Similar: maybe",
+  tip:"Perhaps = maybe.",
+  mc:["“Where's Anna?” “I'm not sure. ___ she's still at school.”","Perhaps",["On the other hand","A couple of","Gap year"]],
+  wr:["___ it will rain tomorrow. Take an umbrella.",["perhaps"]]},
+
+ {en:"on the other hand", up:false, who:"John", form:"On the one hand…, on the other hand…",
+  meaning:"you use it to give a different or opposite idea about the same thing",
+  short:"used to give a different or opposite idea",
+  use:"Put a comma after it. You can give the first idea with On the one hand.",
+  ex:["Big cities are exciting. [[On the other hand]], they're noisy.","On the one hand, the phone is cheap. [[On the other hand]], the camera isn't good."],
+  rel:"",
+  tip:"Use it to show the other side of an idea. Put a comma after it.",
+  mc:["Living in a small village is quiet and safe. ___, there aren't many shops or cafés.","On the other hand",["Time's up","A couple of","Life-changing"]],
+  wr:["Online lessons are comfortable. ___, it's hard to concentrate at home.",["on the other hand"]]},
+
+ {en:"study further", up:false, who:"John", form:"study further (at university / college)",
+  meaning:"to continue studying after you finish school, for example at college or university",
+  short:"to continue studying after school",
+  use:"Here further means more. Go on to study further means continue your studies.",
+  ex:["If you want to be a doctor, you need to [[study further]].","After school, I want to [[study further]] in another country."],
+  rel:"Similar: continue your studies",
+  tip:"Further here means more: study further = continue your studies.",
+  mc:["Max doesn't want to find a job after school. He wants to go to university and ___.","study further",["give up","run out","get bored"]],
+  wr:["After college she wants to ___ and become a lawyer.",["study further"]]},
+
+ {en:"take a year off", up:false, who:"John", form:"take a day / a week / a year off",
+  meaning:"to stop studying or working for one year, for example to travel, rest or work",
+  short:"to stop studying or working for one year",
+  use:"Put the time between take and off: take a week off, take a year off.",
+  ex:["Some people [[take a year off]] before university.","My mum [[took a week off]] work to paint the house."],
+  rel:"Similar: have a break",
+  tip:"take + time + off: take a day off, take a year off.",
+  mc:["Before starting university, Lily wants to ___ and work as a volunteer.","take a year off",["run out","struggle with","get into the habit of"]],
+  wr:["My brother wants to ___ after school and travel around Asia.",["take a year off"]]},
+
+ {en:"gap year", up:false, who:"John", form:"do / take a gap year",
+  meaning:"a year between finishing school and starting university, when young people often travel, work or volunteer",
+  short:"a year between school and university for travel or work",
+  use:"It's a noun. We say do a gap year or take a gap year.",
+  ex:["During her [[gap year]], she worked in a café.","Are you going to take a [[gap year]]?"],
+  rel:"",
+  tip:"Gap year is a noun: do a gap year, take a gap year.",
+  mc:["Many young people travel or work during their ___.","gap year",["life-changing","on the other hand","a couple of"]],
+  wr:["Are you going to do a ___ before university?",["gap year"]]},
+
+ {en:"save up", up:true, who:"Amy", form:"save up (money) for something",
+  meaning:"to keep money for some time so you can buy or do something later",
+  short:"to keep money for something you want later",
+  use:"Use for + the thing you want: save up for a bike. You can also say save up some money.",
+  ex:["We're [[saving up]] for a family trip.","She [[saved up]] her pocket money to buy a camera."],
+  rel:"Opposite: spend",
+  tip:"save up for + the thing you want: saving up for a bike.",
+  mc:["He isn't buying sweets any more. He's ___ for a new bike.","saving up",["giving up","taking up","running out"]],
+  wr:["I'm ___ for new headphones, so I don't buy snacks.",["saving up"]]},
+
+ {en:"get bored", up:false, who:"Amy", form:"get bored (with something)",
+  meaning:"to start feeling tired and unhappy because something is not interesting or you have nothing to do",
+  short:"to start feeling that something is not interesting",
+  use:"Bored is how a person feels. Boring is what the thing is like: The film was boring, so I got bored.",
+  ex:["I [[get bored]] if I watch TV all day.","The kids [[got bored]] on the long journey."],
+  rel:"",
+  tip:"bored = how you feel; boring = what the thing is like.",
+  mc:["The film was very long, and the children ___ after an hour.","got bored",["took up","saved up","intended"]],
+  wr:["Do you ___ on long car journeys?",["get bored"]]},
+
+ {en:"run out", up:false, who:"Amy", form:"something runs out; run out of something",
+  meaning:"to use or finish all of something, so there is nothing left",
+  short:"to have none of something left",
+  use:"The thing can be the subject: The money ran out. Or the person: We ran out of money (use of).",
+  ex:["Our money [[ran out]], so we went home.","We've [[run out]] of milk."],
+  rel:"",
+  tip:"Money runs out. People run out of money.",
+  mc:["Hurry up! We're ___ of time.","running out",["giving up","taking up","saving up"]],
+  wr:["Charge your phone! The battery is ___.",["running out"]]},
+
+ {en:"struggle with", up:false, who:"Amy", form:"struggle with + noun / -ing",
+  meaning:"to find something very difficult and have to try hard to do it",
+  short:"to find something very difficult",
+  use:"Use a noun or -ing after with: struggle with maths, struggle with getting up early.",
+  ex:["Lots of teens [[struggle with]] getting up early.","I'm [[struggling with]] this exercise."],
+  rel:"Similar: find something difficult",
+  tip:"struggle with + noun: struggle with grammar.",
+  mc:["Lots of students ___ grammar at first, but it gets easier.","struggle with",["take the chance","keep an open mind","save up"]],
+  wr:["Are you ___ this exercise? I can help you.",["struggling with"]]},
+
+ {en:"life-changing", up:false, who:"Amy", form:"a life-changing experience / decision",
+  meaning:"so important that it changes your life in a big way",
+  short:"so important that it changes your life",
+  use:"It's an adjective with a hyphen (-). Put it before a noun: a life-changing trip.",
+  ex:["The trip was a [[life-changing]] experience.","Moving to a new country was a [[life-changing]] decision."],
+  rel:"",
+  tip:"Write it with a hyphen: a life-changing experience.",
+  mc:["Moving to another country was a ___ experience for my family.","life-changing",["bored","a couple of","perhaps"]],
+  wr:["Travelling alone was a ___ experience for me.",["life-changing","life changing"]]}
+];
+const ALL = DATA.map((_, i) => i);
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hl = s => esc(s).replace(/\[\[(.+?)\]\]/g, "<b>$1</b>");
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const bar = (done, total) => `<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><span style="width:${total ? done / total * 100 : 0}%"></span></div>`;
+const norm = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/\s+/g, " ").trim().replace(/[.!?,]+$/, "").trim();
+const gapHTML = (s, fill) => esc(s).replace("___", fill ? `<span class="gap filled">${esc(fill)}</span>` : `<span class="gap">&nbsp;</span>`);
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+/* Tabs */
+const tabs = [...document.querySelectorAll("nav.tabs button")];
+const starters = {cards: () => startCards(), match: () => startMatch(), choose: () => startQuiz("choose"), write: () => startQuiz("write")};
+tabs.forEach(b => b.addEventListener("click", () => {
+  tabs.forEach(t => t.setAttribute("aria-selected", String(t === b)));
+  starters[b.dataset.mode]();
+}));
+
+/* ---------- Cards ---------- */
+let C;
+function startCards(list = ALL, mix = false) {
+  C = {base: list.slice(), queue: mix ? shuffle(list) : list.slice(), pos: 0, again: new Set()};
+  renderCard();
+}
+function renderCard() {
+  if (C.pos >= C.queue.length) return cardsDone();
+  const d = DATA[C.queue[C.pos]];
+  app.innerHTML = `${bar(C.pos, C.queue.length)}
+  <p class="meta">Cards left: ${C.queue.length - C.pos}. Tap the card to turn it over.</p>
+  <div class="ticket" id="ticket" role="button" tabindex="0" aria-pressed="false" aria-label="Card: ${esc(d.en)}">
+    <div class="ticket-inner">
+      <div class="face front">
+        <div class="tags"><span>From the text: ${esc(d.who)}</span>${d.up ? '<span class="tag-up">phrase with up</span>' : ""}</div>
+        <p class="phrase">${esc(d.en)}</p>
+        <p class="form">${esc(d.form)}</p>
+        <p class="stub">Can you explain it? Turn over and check.</p>
+      </div>
+      <div class="face back" aria-hidden="true">
+        <p class="back-title">${esc(d.en)}</p>
+        <p class="meaning">${esc(cap(d.meaning))}.</p>
+        <p><span class="lbl">How to use it</span>${esc(d.use)}</p>
+        <span class="lbl">Examples</span>
+        <ul>${d.ex.map(e => `<li>${hl(e)}</li>`).join("")}</ul>
+        ${d.rel ? `<p>${esc(d.rel)}</p>` : ""}
+        <p class="stub">Tap to turn back</p>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn" id="again">Again</button>
+    <button class="btn primary" id="know">I know it</button>
+  </div>
+  <div class="actions"><button class="btn quiet" id="mix">Shuffle the cards</button></div>`;
+  const t = document.getElementById("ticket");
+  const flip = () => {
+    const on = t.classList.toggle("flipped");
+    t.setAttribute("aria-pressed", String(on));
+    t.querySelector(".front").setAttribute("aria-hidden", String(on));
+    t.querySelector(".back").setAttribute("aria-hidden", String(!on));
+  };
+  t.addEventListener("click", flip);
+  t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+  document.getElementById("again").onclick = () => { const i = C.queue[C.pos]; C.again.add(i); C.queue.push(i); C.pos++; renderCard(); };
+  document.getElementById("know").onclick = () => { C.pos++; renderCard(); };
+  document.getElementById("mix").onclick = () => startCards(C.base, true);
+}
+function cardsDone() {
+  const hard = [...C.again];
+  app.innerHTML = `${bar(1, 1)}
+  <div class="summary">
+    <h2>You've finished the cards</h2>
+    ${hard.length
+      ? `<p>You pressed Again for these phrases (${hard.length}):</p><ul>${hard.map(i => `<li><b>${esc(DATA[i].en)}</b>: ${esc(DATA[i].short)}</li>`).join("")}</ul>`
+      : `<p>You knew every card. Now try Match, Choose and Write.</p>`}
+  </div>
+  <div class="actions">
+    ${hard.length ? '<button class="btn primary" id="hard">Practise these again</button>' : ""}
+    <button class="btn" id="restart">Start again</button>
+  </div>`;
+  if (hard.length) document.getElementById("hard").onclick = () => startCards(hard, true);
+  document.getElementById("restart").onclick = () => startCards();
+}
+
+/* ---------- Match ---------- */
+let M;
+function startMatch(list = ALL) {
+  const s = shuffle(list), rounds = [];
+  for (let i = 0; i < s.length; i += 5) rounds.push(s.slice(i, i + 5));
+  if (rounds.length > 1 && rounds[rounds.length - 1].length < 3) rounds[rounds.length - 2].push(...rounds.pop());
+  M = {rounds, r: 0, sel: null, done: new Set(), mistakes: 0, wrong: new Set()};
+  renderMatch();
+}
+function renderMatch() {
+  if (M.r >= M.rounds.length) return matchDone();
+  const ids = M.rounds[M.r], defs = shuffle(ids);
+  app.innerHTML = `${bar(M.r, M.rounds.length)}
+  <p class="meta" id="mmeta">Round ${M.r + 1} of ${M.rounds.length}. Choose a phrase, then choose its meaning.</p>
+  <div class="chips">${ids.map(i => `<button class="chip" data-i="${i}">${esc(DATA[i].en)}</button>`).join("")}</div>
+  <div class="defs">${defs.map(i => `<button class="def-btn" data-i="${i}">${esc(DATA[i].short)}</button>`).join("")}</div>`;
+  app.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+    if (b.disabled) return;
+    M.sel = +b.dataset.i;
+    app.querySelectorAll(".chip").forEach(c => c.classList.toggle("sel", c === b));
+  });
+  app.querySelectorAll(".def-btn").forEach(b => b.onclick = () => {
+    if (b.disabled) return;
+    const meta = document.getElementById("mmeta");
+    if (M.sel === null) { meta.textContent = "Choose a phrase first, then its meaning."; return; }
+    const i = +b.dataset.i;
+    if (i === M.sel) {
+      const chip = app.querySelector(`.chip[data-i="${i}"]`);
+      chip.classList.remove("sel"); chip.classList.add("done"); chip.disabled = true;
+      b.classList.add("done"); b.disabled = true;
+      b.insertAdjacentHTML("beforeend", `<b>${esc(DATA[i].en)}</b>`);
+      M.done.add(i); M.sel = null;
+      meta.textContent = `Round ${M.r + 1} of ${M.rounds.length}. Correct!`;
+      if (ids.every(x => M.done.has(x))) setTimeout(() => { M.r++; renderMatch(); }, 700);
+    } else {
+      M.mistakes++; M.wrong.add(M.sel);
+      b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong");
+      setTimeout(() => b.classList.remove("wrong"), 600);
+      meta.textContent = `Not this one. Try another meaning for “${DATA[M.sel].en}”.`;
+    }
+  });
+}
+function matchDone() {
+  const w = [...M.wrong];
+  app.innerHTML = `${bar(1, 1)}
+  <div class="summary">
+    <h2>All pairs matched</h2>
+    <p>Mistakes: ${M.mistakes}.</p>
+    ${w.length ? `<p>You made mistakes with these phrases:</p><ul>${w.map(i => `<li><b>${esc(DATA[i].en)}</b>: ${esc(DATA[i].short)}</li>`).join("")}</ul>` : "<p>No mistakes. Great job!</p>"}
+  </div>
+  <div class="actions">
+    ${w.length >= 2 ? '<button class="btn primary" id="rep">Practise these again</button>' : ""}
+    <button class="btn" id="restart">Start again</button>
+  </div>`;
+  if (w.length >= 2) document.getElementById("rep").onclick = () => startMatch(w);
+  document.getElementById("restart").onclick = () => startMatch();
+}
+
+/* ---------- Choose & Write ---------- */
+let Q;
+function startQuiz(kind, list = ALL) {
+  Q = {kind, order: shuffle(list), pos: 0, score: 0, wrong: [], answered: false};
+  kind === "choose" ? renderChoose() : renderWrite();
+}
+const head = () => `${bar(Q.pos, Q.order.length)}<p class="meta">Question ${Q.pos + 1} of ${Q.order.length}. Correct: ${Q.score}</p>`;
+function nextBtn() {
+  const n = document.getElementById("next");
+  n.hidden = false; n.focus();
+  n.onclick = () => { Q.pos++; Q.kind === "choose" ? renderChoose() : renderWrite(); };
+}
+function feedback(ok, answer, d) {
+  return ok
+    ? `<p class="fb ok"><b>Correct!</b> ${esc(cap(d.tip))}</p>`
+    : `<p class="fb no"><b>Not quite.</b> The answer is <b>${esc(answer)}</b>. ${esc(cap(d.tip))}</p>`;
+}
+function renderChoose() {
+  if (Q.pos >= Q.order.length) return quizDone();
+  const i = Q.order[Q.pos], d = DATA[i], [s, a, dist] = d.mc;
+  const opts = shuffle([a, ...dist]);
+  Q.answered = false;
+  app.innerHTML = `${head()}
+  <div class="q-card"><p class="sentence" id="sent">${gapHTML(s)}</p></div>
+  <div class="options">${opts.map(o => `<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>
+  <div id="fb"></div>
+  <div class="actions"><button class="btn primary" id="next" hidden>Next</button></div>`;
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (Q.answered) return;
+    Q.answered = true;
+    const ok = b.dataset.o === a;
+    app.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.o === a) x.classList.add("right"); });
+    if (!ok) b.classList.add("wrongpick");
+    document.getElementById("sent").innerHTML = gapHTML(s, a);
+    if (ok) Q.score++; else Q.wrong.push(i);
+    document.getElementById("fb").innerHTML = feedback(ok, a, d);
+    nextBtn();
+  });
+}
+function renderWrite() {
+  if (Q.pos >= Q.order.length) return quizDone();
+  const i = Q.order[Q.pos], d = DATA[i], [s, acc] = d.wr;
+  Q.answered = false;
+  const startsSentence = s.startsWith("___");
+  const shown = startsSentence ? cap(acc[0]) : acc[0];
+  const pattern = shown.split(" ").map(w => w[0] + w.slice(1).replace(/[a-z]/gi, "_")).join(" ");
+  app.innerHTML = `${head()}
+  <div class="q-card">
+    <p class="sentence" id="sent">${gapHTML(s)}</p>
+    <p class="cue">Meaning: ${esc(d.short)}</p>
+    <p class="hint" id="hint" hidden>${esc(pattern)}</p>
+  </div>
+  <input class="answer" id="ans" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type the missing words">
+  <div id="fb"></div>
+  <div class="actions">
+    <button class="btn" id="hintBtn">Show first letters</button>
+    <button class="btn primary" id="check">Check</button>
+  </div>
+  <div class="actions"><button class="btn primary" id="next" hidden>Next</button></div>`;
+  const inp = document.getElementById("ans");
+  inp.focus({preventScroll: true});
+  document.getElementById("hintBtn").onclick = () => { document.getElementById("hint").hidden = false; inp.focus(); };
+  const check = () => {
+    if (Q.answered) return;
+    if (!inp.value.trim()) { document.getElementById("fb").innerHTML = '<p class="fb note">Type your answer first.</p>'; inp.focus(); return; }
+    Q.answered = true;
+    const ok = acc.map(norm).includes(norm(inp.value));
+    inp.readOnly = true; inp.classList.add(ok ? "ok" : "no");
+    document.getElementById("check").disabled = true;
+    document.getElementById("hintBtn").disabled = true;
+    document.getElementById("sent").innerHTML = gapHTML(s, shown);
+    if (ok) Q.score++; else Q.wrong.push(i);
+    document.getElementById("fb").innerHTML = feedback(ok, shown, d);
+    nextBtn();
+  };
+  document.getElementById("check").onclick = check;
+  inp.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); if (!Q.answered) check(); else document.getElementById("next").click(); } });
+}
+function quizDone() {
+  const w = [...new Set(Q.wrong)], kind = Q.kind;
+  app.innerHTML = `${bar(1, 1)}
+  <div class="summary">
+    <h2>Your score: ${Q.score} out of ${Q.order.length}</h2>
+    ${w.length ? `<p>You made mistakes here:</p><ul>${w.map(i => `<li><b>${esc(DATA[i].en)}</b>: ${esc(DATA[i].short)}</li>`).join("")}</ul>` : "<p>Everything is correct. Great work!</p>"}
+  </div>
+  <div class="actions">
+    ${w.length ? '<button class="btn primary" id="rep">Practise your mistakes</button>' : ""}
+    <button class="btn" id="restart">Start again</button>
+  </div>`;
+  if (w.length) document.getElementById("rep").onclick = () => startQuiz(kind, w);
+  document.getElementById("restart").onclick = () => startQuiz(kind);
+}
+
+/* ---------- Board title ---------- */
+(function board() {
+  const el = document.getElementById("board");
+  el.innerHTML = ["BIG", "DECISIONS"].map(l => `<span class="line" aria-hidden="true">${[...l].map(ch => `<span class="tile" data-ch="${ch}">${ch}</span>`).join("")}</span>`).join("");
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  el.querySelectorAll(".tile").forEach((t, k) => {
+    let n = 0; const stop = 4 + k;
+    const id = setInterval(() => {
+      if (n++ >= stop) { t.textContent = t.dataset.ch; clearInterval(id); }
+      else t.textContent = A[Math.floor(Math.random() * 26)];
+    }, 50);
+  });
+})();
+
+startCards();
+</script>
+</body>
+</html>
