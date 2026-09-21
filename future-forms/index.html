@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Future Forms Trainer · B1+</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#1f8a8a;--teal-l:#e6f3f3;--coral:#e8513f;--coral-l:#fdecea;--amber:#d98a0b;--amber-l:#fdf3e1;--ink:#1d2b2b;--mute:#5b6b6b;--bg:#fbfaf6;--ok:#177a3d;--bad:#b0342a}
+*{box-sizing:border-box;margin:0;padding:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);font-family:"Nunito","DejaVu Sans",sans-serif;color:var(--ink);min-height:100vh;display:flex;justify-content:center;padding:28px 16px}
+.wrap{width:100%;max-width:760px}
+header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--ink);padding-bottom:10px;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+h1{font-family:"Lora",serif;font-size:clamp(26px,5vw,38px);line-height:1}
+h1 span{color:var(--teal)}
+.lvl{background:var(--ink);color:#fff;border-radius:6px;padding:3px 10px;font-weight:800}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:14px;font-weight:700}
+.legend span{padding:4px 10px;border-radius:6px;color:#fff}
+.pc{background:var(--coral)}.wl{background:var(--teal)}.gt{background:var(--amber)}
+.bar{height:10px;background:#e3e7e7;border-radius:6px;overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.meta{display:flex;justify-content:space-between;font-size:15px;color:var(--mute);margin-bottom:14px;font-weight:600}
+.card{background:#fff;border:2px solid #d9dede;border-radius:18px;padding:26px 24px}
+.ctx{font-size:16px;color:var(--mute);margin-bottom:8px;font-style:italic}
+.sent{font-family:"Lora",serif;font-size:clamp(21px,4vw,27px);line-height:1.4;margin-bottom:22px}
+.gap{display:inline-block;min-width:110px;border-bottom:3px solid var(--ink);text-align:center;padding:0 6px;font-weight:700}
+.gap.ok{color:var(--ok);border-color:var(--ok)}.gap.bad{color:var(--bad);border-color:var(--bad)}
+.opts{display:grid;gap:10px}
+button.opt{font:inherit;font-size:18px;font-weight:700;text-align:left;padding:14px 16px;border-radius:12px;border:2px solid #cfd6d6;background:#f7f9f9;cursor:pointer;transition:.15s;color:var(--ink)}
+button.opt:hover:not(:disabled){border-color:var(--ink);transform:translateY(-1px)}
+button.opt:disabled{cursor:default}
+button.opt.right{background:#e3f4e9;border-color:var(--ok);color:var(--ok)}
+button.opt.wrong{background:#fbe6e3;border-color:var(--bad);color:var(--bad)}
+.fb{margin-top:18px;border-radius:12px;padding:14px 16px;font-size:17px;line-height:1.45;display:none;border-left:6px solid}
+.fb.show{display:block}
+.fb .tag{display:inline-block;color:#fff;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:5px;padding:2px 8px;margin-bottom:6px}
+.fb.pc{background:var(--coral-l);border-color:var(--coral)}.fb.wl{background:var(--teal-l);border-color:var(--teal)}.fb.gt{background:var(--amber-l);border-color:var(--amber)}
+.fb.pc .tag{background:var(--coral)}.fb.wl .tag{background:var(--teal)}.fb.gt .tag{background:var(--amber)}
+.next{margin-top:18px;font:inherit;font-weight:800;font-size:18px;padding:13px 26px;border-radius:12px;border:none;background:var(--ink);color:#fff;cursor:pointer;display:none}
+.next.show{display:inline-block}
+.result{text-align:center}
+.big{font-family:"Lora",serif;font-size:64px;color:var(--teal);line-height:1;margin:10px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{border-radius:12px;padding:12px;color:#fff;font-weight:700}
+.stat b{display:block;font-size:26px}
+.review{text-align:left;margin-top:16px}
+.review h3{font-family:"Lora",serif;font-size:22px;margin-bottom:8px}
+.rv{padding:10px 12px;border-radius:10px;background:#f7f9f9;margin-bottom:8px;font-size:16px;line-height:1.4}
+.rv s{color:var(--bad)}.rv b{color:var(--ok)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tab{font:inherit;font-weight:800;font-size:16px;padding:11px 10px;border-radius:12px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer;line-height:1.2}
+.tab small{display:block;font-weight:600;font-size:13px;color:var(--mute)}
+.tab.on{background:var(--ink);color:#fff}.tab.on small{color:#cfd6d6}
+.verb{color:var(--teal);font-style:italic;font-size:.85em}
+.inrow{display:flex;gap:10px;flex-wrap:wrap}
+.inp{flex:1;min-width:200px;font:inherit;font-size:20px;font-weight:700;padding:13px 14px;border-radius:12px;border:2px solid #cfd6d6;background:#f7f9f9;color:var(--ink);outline:none}
+.inp:focus{border-color:var(--teal);background:#fff}
+.inp.right{border-color:var(--ok);background:#e3f4e9;color:var(--ok)}.inp.wrong{border-color:var(--bad);background:#fbe6e3;color:var(--bad)}
+.check{font:inherit;font-weight:800;font-size:18px;padding:13px 22px;border-radius:12px;border:none;background:var(--teal);color:#fff;cursor:pointer}
+.check:disabled{opacity:.4;cursor:default}
+.task{font-size:15px;font-weight:700;color:var(--mute);margin-bottom:10px;text-transform:uppercase;letter-spacing:.8px}
+.hint{font-size:14px;color:var(--mute);margin-top:12px;text-align:center}
+</style></head><body>
+<div class="wrap">
+  <header><h1>Future <span>Trainer</span></h1><span class="lvl">B1+</span></header>
+  <div class="legend"><span class="pc">Present Continuous — договорённости</span><span class="wl">will — прогноз-мнение · решение сейчас</span><span class="gt">going to — намерения · признаки</span></div>
+  <div class="tabs"><button class="tab on" data-m="mc">Задание 1: выбери<small>выбор из трёх вариантов</small></button><button class="tab" data-m="tp">Задание 2: впиши<small>поставь глагол в нужную форму</small></button></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="meta"><span id="count"></span><span id="score"></span></div>
+  <div class="card" id="card"></div>
+  <p class="hint" id="hint"></p>
+</div>
+<script>
+const Q=[
+ {ctx:"Звонит телефон.",s:"The phone's ringing! I ___ it.",o:["'ll answer","'m answering","'m going to answer"],a:0,t:"wl",e:"Решение принято прямо сейчас, в момент речи → <b>will</b>."},
+ {ctx:"Билеты в кино уже куплены.",s:"I ___ Kate at the cinema at 7 tonight.",o:["'m meeting","'ll meet","meet"],a:0,t:"pc",e:"Договорились с другим человеком, известны время и место → <b>Present Continuous</b>."},
+ {ctx:"На небе чёрные тучи.",s:"Look at those clouds! It ___.",o:["'s going to rain","'ll rain","'s raining"],a:0,t:"gt",e:"Прогноз по тому, что видим прямо сейчас (тучи) → <b>be going to</b>."},
+ {ctx:"Мнение болельщика.",s:"I think Brazil ___ the next World Cup.",o:["will win","is winning","wins"],a:0,t:"wl",e:"Прогноз — личное мнение (I think), доказательств перед глазами нет → <b>will</b>."},
+ {ctx:"Решение принято вчера.",s:"I've decided. I ___ a new bike with my birthday money.",o:["'m going to buy","'ll buy","'m buying"],a:0,t:"gt",e:"Намерение: решил заранее, но ни с кем ни о чём не договаривался → <b>be going to</b>."},
+ {ctx:"У подруги тяжёлые сумки.",s:"Your bags look heavy. I ___ you!",o:["'ll help","'m helping","'m going to help"],a:0,t:"wl",e:"Спонтанное предложение помощи → <b>will</b>."},
+ {ctx:"Друг лезет на шаткую лестницу.",s:"Watch out! You ___!",o:["'re going to fall","'ll fall","fall"],a:0,t:"gt",e:"Видим, что сейчас случится → <b>be going to</b>."},
+ {ctx:"Рейс уже забронирован.",s:"My dad ___ to Paris on Monday. His flight is at 9 a.m.",o:["is flying","will fly","flies"],a:0,t:"pc",e:"Поездка организована: билет куплен, время известно → <b>Present Continuous</b>."},
+ {ctx:"Подруга доверила секрет.",s:"Don't worry. I promise I ___ anyone.",o:["won't tell","'m not telling","don't tell"],a:0,t:"wl",e:"Обещание (I promise) → <b>will / won't</b>."},
+ {ctx:"Разговор о далёком будущем.",s:"I'm sure people ___ on Mars one day.",o:["will live","are living","are going to live"],a:0,t:"wl",e:"Прогноз-уверенность (I'm sure) о далёком будущем без видимых признаков → <b>will</b>."},
+ {ctx:"Новогоднее обещание самой себе.",s:"She ___ harder next term. She's decided.",o:["'s going to study","'ll study","'s studying"],a:0,t:"gt",e:"Намерение, решение принято заранее → <b>be going to</b>."},
+ {ctx:"Приглашение друга.",s:"We ___ a party on Saturday. Would you like to come?",o:["'re having","'ll have","have"],a:0,t:"pc",e:"Вечеринка уже организована, гости приглашены → <b>Present Continuous</b>."},
+ {ctx:"Друг волнуется перед тестом.",s:"You've worked so hard. I'm sure you ___ the test.",o:["'ll pass","'re passing","pass"],a:0,t:"wl",e:"Прогноз-мнение (I'm sure) → <b>will</b>."},
+ {ctx:"Однокласснику нечем писать.",s:"You forgot your pen? No problem, I ___ you mine.",o:["'ll lend","'m lending","'m going to lend"],a:0,t:"wl",e:"Решение и предложение прямо сейчас → <b>will</b>."},
+ {ctx:"До отхода поезда 1 минута, а Тому идти 5.",s:"Tom is still far from the station. He ___ the train.",o:["'s going to miss","'ll miss","'s missing"],a:0,t:"gt",e:"Факты перед глазами ясно показывают результат → <b>be going to</b>."},
+ {ctx:"Спрашиваем о планах друга.",s:"What ___ this weekend? — We're visiting Grandma.",o:["are you doing","will you do","do you do"],a:0,t:"pc",e:"О планах других людей обычно спрашиваем в <b>Present Continuous</b>."}
+];
+const T=[
+ {ctx:"Билеты на самолёт уже забронированы.",s:"We ___ to London next Friday.",v:"fly",a:["are flying"],t:"pc",e:"Поездка организована, время известно → <b>Present Continuous</b>: are flying."},
+ {ctx:"Кто-то звонит в дверь.",s:"Someone's at the door. — I ___ it.",v:"open",a:["will open"],t:"wl",e:"Решение в момент речи → <b>will</b>: will open / 'll open."},
+ {ctx:"Машину заносит прямо на дерево.",s:"Look! That car ___ into the tree!",v:"crash",a:["is going to crash"],t:"gt",e:"Видим, что сейчас произойдёт → <b>be going to</b>: is going to crash."},
+ {ctx:"Мнение о погоде.",s:"I don't think it ___ cold tomorrow.",v:"be",a:["will be"],t:"wl",e:"Прогноз-мнение (I don't think) → <b>will</b>: will be."},
+ {ctx:"Решение принято, но курсы ещё не выбраны.",s:"I ___ Spanish next year. I've already decided.",v:"learn",a:["am going to learn"],t:"gt",e:"Намерение, решено заранее → <b>be going to</b>: am going to learn / 'm going to learn."},
+ {ctx:"Анна записалась к врачу неделю назад.",s:"Anna ___ the dentist at 4 today.",v:"see",a:["is seeing"],t:"pc",e:"Запись к врачу — договорённость со временем → <b>Present Continuous</b>: is seeing. (see = встречаться, поэтому -ing возможен)"},
+ {ctx:"Ты опоздал и извиняешься.",s:"I'm sorry. I promise I ___ late again.",v:"not / be",a:["will not be"],t:"wl",e:"Обещание → <b>will</b>: won't be / will not be."},
+ {ctx:"Он вообще не готовился к экзамену.",s:"He hasn't studied at all. He ___ the exam.",v:"fail",a:["is going to fail"],t:"gt",e:"Прогноз по фактам (не готовился) → <b>be going to</b>: is going to fail."},
+ {ctx:"Смиты пригласили вас, вы согласились.",s:"We ___ dinner with the Smiths tonight.",v:"have",a:["are having"],t:"pc",e:"Договорились с другими людьми → <b>Present Continuous</b>: are having."},
+ {ctx:"Подруга говорит, что ей холодно.",s:"It's cold in here. — Oh, I ___ the window.",v:"close",a:["will close"],t:"wl",e:"Спонтанное решение/предложение → <b>will</b>: will close / 'll close."},
+ {ctx:"Ресторан на свадьбу уже забронирован.",s:"They ___ married in June.",v:"get",a:["are getting"],t:"pc",e:"Событие организовано → <b>Present Continuous</b>: are getting."},
+ {ctx:"Семья решила копить деньги.",s:"We ___ a new car this year.",v:"not / buy",a:["are not going to buy"],t:"gt",e:"Намерение (решили заранее) → <b>be going to</b>: aren't going to buy / 're not going to buy."}
+];
+const L={pc:"Present Continuous",wl:"will",gt:"be going to"};
+const N=x=>x.toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.!?,;]/g,' ')
+ .replace(/\bwon't\b/g,'will not').replace(/\bcan't\b/g,'can not').replace(/n't\b/g,' not')
+ .replace(/'ll\b/g,' will').replace(/'re\b/g,' are').replace(/'m\b/g,' am').replace(/'s\b/g,' is')
+ .replace(/\s+/g,' ').trim();
+const PRON=/^(i|you|he|she|it|we|they|anna|someone)\s+/;
+function judge(q,raw){
+ let x=N(raw).replace(PRON,'');
+ if(q.a.map(N).includes(x))return{ok:true};
+ let form=/going to/.test(x)?'gt':/\bwill\b/.test(x)?'wl':/\b(am|is|are)\b.*ing\b/.test(x)?'pc':null;
+ return{ok:false,form};
+}
+let mode='mc',order,i,score,mistakes,locked;
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a};
+function start(){
+ if(mode==='mc')order=shuffle(Q).map(q=>{const idx=shuffle([0,1,2]);return{...q,o:idx.map(n=>q.o[n]),a:idx.indexOf(q.a)}});
+ else order=shuffle(T);
+ i=0;score=0;mistakes=[];
+ $('hint').textContent=mode==='mc'?'Клавиши 1–3 — выбрать ответ, Enter — дальше':'Впиши только глагольную форму (можно с сокращениями: \'ll, \'re, won\'t). Enter — проверить / дальше';
+ show();
+}
+function head(){
+ $('count').textContent=`Вопрос ${i+1} из ${order.length}`;$('score').textContent=`Верно: ${score}`;
+ $('bar').style.width=(i/order.length*100)+'%';
+}
+function show(){
+ locked=false;const q=order[i];head();
+ if(mode==='mc'){
+  $('card').innerHTML=`<div class="task">Выбери правильный вариант</div><div class="ctx">${q.ctx}</div>
+  <div class="sent">${q.s.replace('___','<span class="gap" id="gap">&nbsp;?&nbsp;</span>')}</div>
+  <div class="opts">${q.o.map((o,n)=>`<button class="opt" data-n="${n}">${n+1}. ${o}</button>`).join('')}</div>
+  <div class="fb ${q.t}" id="fb"></div><button class="next" id="next">${i+1<order.length?'Дальше →':'Результат →'}</button>`;
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.n));
+ }else{
+  $('card').innerHTML=`<div class="task">Поставь глагол в нужную форму</div><div class="ctx">${q.ctx}</div>
+  <div class="sent">${q.s.replace('___','<span class="gap" id="gap">&nbsp;?&nbsp;</span>')} <span class="verb">(${q.v})</span></div>
+  <div class="inrow"><input class="inp" id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="например: 'm going to …"><button class="check" id="chk">Проверить</button></div>
+  <div class="fb ${q.t}" id="fb"></div><button class="next" id="next">${i+1<order.length?'Дальше →':'Результат →'}</button>`;
+  $('chk').onclick=checkTyped;$('inp').focus();
+ }
+ $('next').onclick=advance;
+}
+function feedback(q,ok,extra){
+ const g=$('gap');g.textContent=q.a!==undefined&&mode==='mc'?q.o[q.a]:q.a[0].replace('will not','won\'t');g.classList.add('ok');
+ const fb=$('fb');fb.innerHTML=`<span class="tag">${L[q.t]}</span><br>${ok?'✅ Верно! ':'❌ Не совсем. '}${extra||''}${q.e}`;fb.classList.add('show');
+ $('next').classList.add('show');$('score').textContent=`Верно: ${score}`;
+}
+function pick(n){
+ if(locked)return;locked=true;const q=order[i],ok=n===q.a;
+ if(ok)score++;else mistakes.push({q,chosen:q.o[n],right:q.o[q.a]});
+ document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('right');else if(k===n)b.classList.add('wrong')});
+ feedback(q,ok);
+}
+function checkTyped(){
+ const inp=$('inp');if(locked||!inp.value.trim())return;locked=true;
+ const q=order[i],r=judge(q,inp.value);
+ inp.disabled=true;$('chk').disabled=true;inp.classList.add(r.ok?'right':'wrong');
+ let extra='';
+ if(r.ok)score++;
+ else{mistakes.push({q,chosen:inp.value.trim(),right:q.a[0].replace('will not','won\'t')});
+  if(r.form&&r.form!==q.t)extra=`Ты использовал(а) <b>${L[r.form]}</b>, а здесь нужен другой вариант. `;
+  else if(r.form===q.t)extra='Форма выбрана верно, но есть ошибка в написании. ';}
+ feedback(q,r.ok,extra);
+}
+function advance(){i++;if(i<order.length)show();else finish()}
+function finish(){
+ $('bar').style.width='100%';$('count').textContent='Готово!';
+ const by={pc:[0,0],wl:[0,0],gt:[0,0]};
+ order.forEach(q=>{by[q.t][1]++;if(!mistakes.find(m=>m.q===q))by[q.t][0]++});
+ const pct=Math.round(score/order.length*100);
+ const msg=pct>=90?'Отлично! Тема освоена 🎉':pct>=70?'Хорошо! Повтори ошибки ниже 💪':'Загляни в шпаргалку и попробуй ещё раз 📘';
+ const other=mode==='mc'?'<button class="check" id="go2" style="margin-left:8px">Задание 2 →</button>':'';
+ $('card').innerHTML=`<div class="result"><div class="ctx">${mode==='mc'?'Задание 1':'Задание 2'} — твой результат</div><div class="big">${score} / ${order.length}</div><div style="font-size:19px;font-weight:700">${msg}</div>
+ <div class="stats"><div class="stat pc"><b>${by.pc[0]}/${by.pc[1]}</b>Pres. Cont.</div><div class="stat wl"><b>${by.wl[0]}/${by.wl[1]}</b>will</div><div class="stat gt"><b>${by.gt[0]}/${by.gt[1]}</b>going to</div></div>
+ ${mistakes.length?`<div class="review"><h3>Разбор ошибок</h3>${mistakes.map(m=>`<div class="rv">${m.q.s.replace('___',`<s>${m.chosen}</s> <b>${m.right}</b>`)}<br><small>${m.q.e}</small></div>`).join('')}</div>`:''}
+ <button class="next show" id="again">Пройти заново ↻</button>${other}</div>`;
+ $('again').onclick=start;if($('go2'))$('go2').onclick=()=>setMode('tp');
+}
+function setMode(m){mode=m;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.m===m));start()}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>setMode(t.dataset.m));
+document.addEventListener('keydown',e=>{
+ if(mode==='mc'&&['1','2','3'].includes(e.key)){if(document.querySelector(`.opt[data-n="${+e.key-1}"]`)&&!locked)pick(+e.key-1)}
+ if(e.key==='Enter'){const n=$('next');if(n&&n.classList.contains('show')){e.preventDefault();n.click()}else if(mode==='tp'&&$('inp')){checkTyped()}}
+});
+start();
+</script>
+</body></html>
