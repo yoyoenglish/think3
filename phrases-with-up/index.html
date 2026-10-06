@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Phrases with up – B1+ trainer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬆️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E7ECF7; --surface:#FFFFFF; --tint:#F2F5FD; --ink:#16233F; --muted:#56627C; --line:#C8D2E8;
+  --cobalt:#2B54C8; --cobalt-ink:#FFFFFF; --mark:rgba(255,197,51,.55);
+  --ok:#14794F; --ok-soft:#DCF2E6; --bad:#B8303A; --bad-soft:#FBE2E4; --focus:#16233F;
+  --display:"Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1830; --surface:#18233F; --tint:#1E2B4D; --ink:#E8EDF9; --muted:#A6B1CA; --line:#2E3C61;
+    --cobalt:#86A2FF; --cobalt-ink:#0F1830; --mark:rgba(255,197,51,.30);
+    --ok:#5BD29B; --ok-soft:#163A2B; --bad:#FF8790; --bad-soft:#41202A; --focus:#E8EDF9;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1830; --surface:#18233F; --tint:#1E2B4D; --ink:#E8EDF9; --muted:#A6B1CA; --line:#2E3C61;
+  --cobalt:#86A2FF; --cobalt-ink:#0F1830; --mark:rgba(255,197,51,.30);
+  --ok:#5BD29B; --ok-soft:#163A2B; --bad:#FF8790; --bad-soft:#41202A; --focus:#E8EDF9;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 var(--text);-webkit-text-size-adjust:100%}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1.25rem 4rem}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+mark{background:linear-gradient(transparent 52%, var(--mark) 52%);color:inherit;font-weight:700;padding:0 .08em}
+button{font:inherit;color:inherit}
+button:focus-visible,.fc:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+/* Hero */
+.hero{padding:2.25rem 0 1.25rem}
+.hero h1{margin:0;font-family:var(--display);font-weight:800;line-height:1}
+.hero .lead{display:block;font-size:clamp(1.3rem,4vw,1.7rem);font-weight:600;color:var(--muted)}
+.hero .big{display:block;font-size:clamp(6.5rem,26vw,11rem);line-height:.82;letter-spacing:-.04em;color:var(--cobalt);padding-top:.22em}
+.big .p{display:inline-block;transform:translateY(-.24em);animation:rise 1s cubic-bezier(.2,.8,.2,1) .2s both}
+@keyframes rise{from{transform:translateY(.04em)}to{transform:translateY(-.24em)}}
+.hero .sub{margin:.75rem 0 0;max-width:34rem;color:var(--muted)}
+
+/* Tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;padding:.7rem 0;margin-bottom:1.5rem;border-bottom:1px solid var(--line)}
+.tab{border:1.5px solid var(--line);background:var(--surface);border-radius:.8rem;padding:.5rem .3rem;cursor:pointer;text-align:center;line-height:1.2}
+.tab b{display:block;font-family:var(--display);font-weight:800;font-size:1rem;white-space:nowrap}
+.tab small{display:block;color:var(--muted);font-size:.8rem;margin-top:.15rem}
+.tab[aria-selected="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--cobalt-ink)}
+.tab[aria-selected="true"] small{color:inherit;opacity:.85}
+
+section h2{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.15;margin:0 0 .35rem}
+section .how{margin:0 0 1.25rem;color:var(--muted)}
+
+.btn{font-weight:700;border-radius:.7rem;padding:.6rem 1.05rem;border:1.5px solid var(--cobalt);background:var(--cobalt);color:var(--cobalt-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--cobalt)}
+.btn[hidden]{display:none}
+
+/* Flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr));gap:.9rem}
+.fc{perspective:1200px;cursor:pointer;border-radius:1rem}
+.fc-inner{display:grid;transition:transform .55s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d;height:100%}
+.fc.flipped .fc-inner{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem;min-height:13.5rem}
+.back{transform:rotateY(180deg);background:var(--tint);border-color:var(--cobalt)}
+.fc.flipped .front,.fc:not(.flipped) .back{pointer-events:none}
+.fc-num{font-family:var(--display);font-weight:800;color:var(--cobalt);font-size:.95rem}
+.fc-phrase{font-family:var(--display);font-weight:800;font-size:1.45rem;line-height:1.15;margin:0}
+.fc-sent{margin:0;font-size:1.05rem}
+.fc-meaning{margin:0;font-family:var(--display);font-weight:800;font-size:1.3rem;line-height:1.2;color:var(--cobalt)}
+.fc-pattern{margin:0;font-size:.95rem;color:var(--muted)}
+.fc-note{margin:0;font-size:.92rem;color:var(--muted)}
+.fc-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding-top:.4rem}
+.fc-hint{font-size:.85rem;color:var(--muted)}
+.listen{display:inline-flex;align-items:center;gap:.4rem;border:1.5px solid var(--cobalt);background:transparent;color:var(--cobalt);border-radius:999px;padding:.35rem .8rem;font-weight:700;font-size:.92rem;cursor:pointer}
+.listen svg{width:1.05em;height:1.05em;flex:none}
+.no-speech .listen{display:none}
+
+.guide{margin-top:1.5rem;background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:1.1rem 1.2rem}
+.guide h3{font-family:var(--display);font-weight:800;font-size:1.15rem;margin:0 0 .6rem}
+.guide dl{display:grid;grid-template-columns:minmax(9rem,auto) 1fr;gap:.5rem 1rem;margin:0}
+.guide dt{font-weight:700}
+.guide dd{margin:0;color:var(--muted)}
+.guide dd i{color:var(--ink)}
+
+/* Match */
+.match{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.m-col{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.m-btn{width:100%;text-align:left;display:flex;gap:.65rem;align-items:flex-start;background:var(--surface);border:1.5px solid var(--line);border-radius:.8rem;padding:.65rem .8rem;cursor:pointer;line-height:1.4}
+.m-btn .tag{font-family:var(--display);font-weight:800;color:var(--cobalt);min-width:1.1rem}
+.m-btn .m-ans{display:block;font-size:.88rem;color:var(--ok);font-weight:700;margin-top:.15rem}
+.m-btn.sel{border-color:var(--cobalt);box-shadow:0 0 0 2px var(--cobalt) inset}
+.m-btn.done{background:var(--ok-soft);border-color:var(--ok);cursor:default}
+.m-btn.done .tag{color:var(--ok)}
+.m-btn.wrong{background:var(--bad-soft);border-color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.status{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-top:1.25rem}
+.status p{margin:0;font-weight:700}
+
+/* Meaning quiz */
+.quiz{background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:1.25rem}
+.q-top{display:flex;justify-content:space-between;font-size:.92rem;color:var(--muted);margin-bottom:.5rem}
+.bar{height:.4rem;background:var(--tint);border-radius:999px;overflow:hidden;margin-bottom:1.1rem}
+.bar i{display:block;height:100%;background:var(--cobalt);width:0;transition:width .3s}
+.q-sentence{font-size:1.3rem;line-height:1.45;margin:0 0 1.1rem}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.q-opt{text-align:left;display:flex;gap:.55rem;background:var(--bg);border:1.5px solid var(--line);border-radius:.75rem;padding:.6rem .75rem;cursor:pointer;line-height:1.3}
+.q-opt .tag{font-family:var(--display);font-weight:800;color:var(--cobalt)}
+.q-opt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.q-opt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.q-opt:disabled{cursor:default}
+.q-opt:disabled:not(.ok):not(.bad){opacity:.6}
+.feedback{min-height:1.5em;margin:1rem 0 0}
+.feedback strong.ok{color:var(--ok)}
+.feedback strong.bad{color:var(--bad)}
+.feedback .why{display:block;color:var(--muted);margin-top:.2rem}
+.q-next{margin-top:1rem}
+.q-end{text-align:center;padding:1rem 0}
+.q-end .score{font-family:var(--display);font-weight:800;font-size:3rem;color:var(--cobalt);margin:0;line-height:1}
+.q-end p{margin:.5rem 0 1.1rem}
+
+/* Rewrite */
+.rw{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.8rem}
+.rw-item{background:var(--surface);border:1.5px solid var(--line);border-radius:1rem;padding:1rem 1.1rem}
+.rw-item.ok{border-color:var(--ok)}
+.rw-orig{margin:0 0 .5rem;color:var(--muted)}
+.rw-orig b{font-family:var(--display);color:var(--cobalt);margin-right:.35rem}
+.rw-target{margin:0;font-size:1.12rem;line-height:2.1}
+.key{display:inline-block;font-family:var(--display);font-weight:800;font-size:.85rem;color:var(--cobalt);border:1.5px solid var(--cobalt);border-radius:.4rem;padding:0 .4rem;line-height:1.5;margin-right:.5rem;vertical-align:middle}
+.rw-target input{font:inherit;font-weight:700;color:var(--ink);background:var(--tint);border:none;border-bottom:2px solid var(--cobalt);border-radius:.35rem .35rem 0 0;padding:.05rem .4rem;width:10.5em;max-width:100%}
+.rw-item.ok input{border-bottom-color:var(--ok);background:var(--ok-soft)}
+.rw-item.bad input{border-bottom-color:var(--bad);background:var(--bad-soft)}
+.rw-item.shown input{border-bottom-color:var(--muted)}
+.rw-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem;margin-top:.6rem}
+.rw-actions .btn{padding:.4rem .85rem;font-size:.95rem}
+.rw-fb{font-size:.95rem}
+.rw-fb.ok{color:var(--ok);font-weight:700}
+.rw-fb.bad{color:var(--bad);font-weight:700}
+
+@media (max-width:600px){
+  .match{grid-template-columns:1fr}
+  .q-opts{grid-template-columns:1fr}
+  .tab{padding:.45rem .15rem}
+  .tab b{font-size:.84rem;letter-spacing:-.01em}
+  .face{min-height:11rem}
+  .guide dl{grid-template-columns:1fr;gap:.1rem}
+  .guide dd{margin-bottom:.5rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .big .p{animation:none}
+  .fc-inner,.bar i{transition:none}
+  .m-btn.wrong{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1><span class="lead">Phrases with</span><span class="big" aria-hidden="true"><span>u</span><span class="p">p</span></span><span class="sr-only">up</span></h1>
+    <p class="sub">Six meanings of <i>up</i> at B1+. Learn them on the cards, then practise in three short tasks.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Steps">
+    <button class="tab" role="tab" id="t-learn" aria-controls="p-learn" aria-selected="true"><b>1 Learn</b><small>6 cards</small></button>
+    <button class="tab" role="tab" id="t-match" aria-controls="p-match" aria-selected="false" tabindex="-1"><b>2 Match</b><small id="c-match">0/6</small></button>
+    <button class="tab" role="tab" id="t-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1"><b>3 Meaning</b><small id="c-quiz">0/12</small></button>
+    <button class="tab" role="tab" id="t-rw" aria-controls="p-rw" aria-selected="false" tabindex="-1"><b>4 Rewrite</b><small id="c-rw">0/7</small></button>
+  </nav>
+
+  <main>
+    <section id="p-learn" role="tabpanel" aria-labelledby="t-learn">
+      <h2>Learn the six meanings</h2>
+      <p class="how">Tap a card to turn it over. Press Listen to hear the sentence.</p>
+      <div class="cards" id="cards"></div>
+      <div class="guide">
+        <h3>Four kinds of <i>up to</i></h3>
+        <dl>
+          <dt>up to + number</dt><dd>a maximum of: <i>up to 50 people</i></dd>
+          <dt>What are you up to?</dt><dd>doing: <i>They're up to something.</i></dd>
+          <dt>It's up to + person</dt><dd>their decision or job: <i>It's up to you.</i></dd>
+          <dt>(not) up to + a task or -ing</dt><dd>(not) able to do it: <i>I'm not up to a marathon.</i></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="p-match" role="tabpanel" aria-labelledby="t-match" hidden>
+      <h2>Match the sentences to the meanings</h2>
+      <p class="how">Tap a sentence, then tap its meaning.</p>
+      <div class="match">
+        <ol class="m-col" id="m-left" aria-label="Sentences"></ol>
+        <ul class="m-col" id="m-right" aria-label="Meanings"></ul>
+      </div>
+      <div class="status">
+        <p id="m-status" aria-live="polite">Matched 0 of 6</p>
+        <button class="btn ghost" id="m-reset" type="button">Start again</button>
+      </div>
+    </section>
+
+    <section id="p-quiz" role="tabpanel" aria-labelledby="t-quiz" hidden>
+      <h2>What does <i>up</i> mean here?</h2>
+      <p class="how">Read the sentence and choose the meaning of the highlighted phrase.</p>
+      <div class="quiz" id="quiz"></div>
+    </section>
+
+    <section id="p-rw" role="tabpanel" aria-labelledby="t-rw" hidden>
+      <h2>Say it with <i>up</i></h2>
+      <p class="how">Complete the second sentence so it means the same as the first. Use <i>up</i> and write two to four words.</p>
+      <ol class="rw" id="rw"></ol>
+      <div class="status">
+        <p id="rw-status" aria-live="polite">Correct: 0 of 7</p>
+        <button class="btn ghost" id="rw-reset" type="button">Clear answers</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Data ---------- */
+  var CARDS = [
+    { phrase:"What's up?", front:"**What's up**, Alan?",
+      meaning:"What's the matter? What's wrong?", pattern:"What's up (with somebody)?",
+      example:"You look upset. **What's up**?", note:"Friends also say it to mean hello: “Hey, what's up?”" },
+    { phrase:"up to + number", front:"I spend **up to** an hour a day practising with friends.",
+      meaning:"as long as, as much as; a maximum of", pattern:"up to + a time, an amount or a number",
+      example:"The bus can take **up to** 50 people." },
+    { phrase:"be up to something", front:"What are you **up to** tomorrow night?",
+      meaning:"doing (sometimes something secret or naughty)", pattern:"What are you up to? / be up to something",
+      example:"The kids are very quiet. What are they **up to**?" },
+    { phrase:"be up (time)", front:"My time at school is almost **up**.",
+      meaning:"finished, over", pattern:"time / the holidays / two weeks + is / are up",
+      example:"Time's **up**! Put your pens down." },
+    { phrase:"be up to somebody", front:"It's **up to me** now to try to do some of the things.",
+      meaning:"somebody's responsibility or decision", pattern:"It's up to me / you / them (to do something)",
+      example:"Pizza or pasta? It's **up to you**." },
+    { phrase:"(not) be up to something", front:"Perhaps I'm not **up to** a marathon.",
+      meaning:"(not) capable of; (not) strong or well enough for", pattern:"be up to + noun or -ing",
+      example:"I've got a cold, so I'm not **up to** playing football today." }
+  ];
+
+  var MATCH_LEFT = [
+    { n:"1", html:"<b>What's up</b>, Alan?" },
+    { n:"2", html:"I spend <b>up to</b> an hour a day practising with friends." },
+    { n:"3", html:"What are you <b>up to</b> tomorrow night?" },
+    { n:"4", html:"My time at school is almost <b>up</b>." },
+    { n:"5", html:"It's <b>up to me</b> now to try to do some of the things." },
+    { n:"6", html:"Perhaps I'm not <b>up to</b> a marathon." }
+  ];
+  var MATCH_RIGHT = [
+    { l:"a", t:"finished" }, { l:"b", t:"doing" }, { l:"c", t:"what's the matter?" },
+    { l:"d", t:"capable of" }, { l:"e", t:"as long as / to a maximum of" }, { l:"f", t:"my responsibility" }
+  ];
+  var MATCH_KEY = { "1":"c", "2":"e", "3":"b", "4":"a", "5":"f", "6":"d" };
+
+  var OPTIONS = [
+    { k:"finished", l:"a", t:"finished" },
+    { k:"doing",    l:"b", t:"doing" },
+    { k:"matter",   l:"c", t:"what's the matter?" },
+    { k:"capable",  l:"d", t:"capable of" },
+    { k:"max",      l:"e", t:"to a maximum of" },
+    { k:"resp",     l:"f", t:"someone's responsibility" }
+  ];
+  var EXPLAIN = {
+    max:"up to + a number or amount = a maximum of.",
+    doing:"be up to something = be doing something, often something secret or naughty.",
+    finished:"If a period of time is up, it has finished.",
+    resp:"It's up to + a person = that person decides; it's their responsibility.",
+    capable:"(not) be up to + noun or -ing = (not) strong, well or good enough to do it.",
+    matter:"What's up (with someone)? = What's the matter? What's wrong?"
+  };
+  var QUIZ = [
+    { s:"The tickets cost **up to** £40, depending on where you sit.", k:"max" },
+    { s:"The kids are too quiet. I wonder what they're **up to**.", k:"doing" },
+    { s:"Stop writing, please. Your time is **up**.", k:"finished" },
+    { s:"Pizza or sushi? I don't mind. It's **up to you**.", k:"resp" },
+    { s:"Grandad has a bad knee, so he isn't **up to** long walks.", k:"capable" },
+    { s:"You've been quiet all day. **What's up**?", k:"matter" },
+    { s:"It's **up to the captain** to choose the team.", k:"resp" },
+    { s:"This backpack can hold **up to** 30 litres.", k:"max" },
+    { s:"After a twelve-hour flight, I wasn't **up to** going to the party.", k:"capable" },
+    { s:"What have you been **up to** since the summer holidays?", k:"doing" },
+    { s:"**What's up** with Max? He looks really angry.", k:"matter" },
+    { s:"When the holidays were **up**, we went back to school.", k:"finished" }
+  ];
+
+  var RW = [
+    { orig:"You decide where we go this weekend.", before:"It's", after:"where we go this weekend.",
+      ans:["up to you","up to you to decide"] },
+    { orig:"What's the matter with Anna today?", before:"", after:"with Anna today?",
+      ans:["what's up","what is up"] },
+    { orig:"The hall holds a maximum of 200 people.", before:"The hall holds", after:"200 people.",
+      ans:["up to"] },
+    { orig:"I don't feel well enough to play football today.", before:"I'm not really", after:"football today.",
+      ans:["up to playing"] },
+    { orig:"What are you doing on Saturday?", before:"What are you", after:"on Saturday?",
+      ans:["up to"] },
+    { orig:"Our two weeks in Spain have finished.", before:"Our two weeks in Spain", after:".",
+      ans:["are up","are now up","are up now"] },
+    { orig:"My parents have to decide about the trip, not me.", before:"It's", after:"to decide about the trip, not me.",
+      ans:["up to my parents"] }
+  ];
+
+  /* ---------- Helpers ---------- */
+  function md(s){ return s.replace(/\*\*(.+?)\*\*/g, "<mark>$1</mark>"); }
+  function plain(s){ return s.replace(/\*\*/g, ""); }
+  function attr(s){ return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+  function $(id){ return document.getElementById(id); }
+  function shuffle(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function norm(s){ return s.toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g," ").trim().replace(/[.?!,;:]+$/,"").trim(); }
+
+  /* ---------- Speech ---------- */
+  var hasSpeech = ("speechSynthesis" in window) && ("SpeechSynthesisUtterance" in window);
+  var voice = null;
+  function pickVoice(){
+    var vs = window.speechSynthesis.getVoices() || [];
+    voice = vs.filter(function(v){ return /en[-_]GB/i.test(v.lang) && /Google|Daniel|Serena|Kate|Arthur|Martha|Libby|Sonia|Ryan/i.test(v.name); })[0]
+         || vs.filter(function(v){ return /en[-_]GB/i.test(v.lang); })[0]
+         || vs.filter(function(v){ return /^en/i.test(v.lang); })[0] || null;
+  }
+  if (hasSpeech){ pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
+  else { document.documentElement.classList.add("no-speech"); }
+  function speak(text){
+    if (!hasSpeech) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    if (voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = "en-GB"; }
+    u.rate = 0.92;
+    window.speechSynthesis.speak(u);
+  }
+  var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+
+  /* ---------- Tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  function selectTab(tab, focus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      $(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+    if (hasSpeech) window.speechSynthesis.cancel();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener("click", function(){ selectTab(t, false); });
+    t.addEventListener("keydown", function(e){
+      var n = null;
+      if (e.key === "ArrowRight") n = tabs[(i+1)%tabs.length];
+      if (e.key === "ArrowLeft") n = tabs[(i-1+tabs.length)%tabs.length];
+      if (n){ e.preventDefault(); selectTab(n, true); }
+    });
+  });
+
+  /* ---------- 1. Flashcards ---------- */
+  var cardsEl = $("cards");
+  CARDS.forEach(function(c, i){
+    var el = document.createElement("div");
+    el.className = "fc";
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-pressed", "false");
+    el.innerHTML =
+      '<div class="fc-inner">' +
+        '<div class="face front">' +
+          '<span class="fc-num">' + (i+1) + '</span>' +
+          '<h3 class="fc-phrase">' + c.phrase + '</h3>' +
+          '<p class="fc-sent">' + md(c.front) + '</p>' +
+          '<div class="fc-foot"><button class="listen" type="button" data-say="' + attr(plain(c.front)) + '">' + ICON + 'Listen</button><span class="fc-hint">Tap for meaning</span></div>' +
+        '</div>' +
+        '<div class="face back">' +
+          '<p class="fc-meaning">' + c.meaning + '</p>' +
+          '<p class="fc-pattern">' + c.pattern + '</p>' +
+          '<p class="fc-sent">' + md(c.example) + '</p>' +
+          (c.note ? '<p class="fc-note">' + c.note + '</p>' : '') +
+          '<div class="fc-foot"><button class="listen" type="button" data-say="' + attr(plain(c.example)) + '">' + ICON + 'Listen</button><span class="fc-hint">Tap to turn back</span></div>' +
+        '</div>' +
+      '</div>';
+    var front = el.querySelector(".front"), back = el.querySelector(".back");
+    back.setAttribute("inert", "");
+    back.setAttribute("aria-hidden", "true");
+    function flip(){
+      var f = el.classList.toggle("flipped");
+      el.setAttribute("aria-pressed", f ? "true" : "false");
+      if (f){ front.setAttribute("inert",""); front.setAttribute("aria-hidden","true"); back.removeAttribute("inert"); back.removeAttribute("aria-hidden"); }
+      else { back.setAttribute("inert",""); back.setAttribute("aria-hidden","true"); front.removeAttribute("inert"); front.removeAttribute("aria-hidden"); }
+    }
+    el.addEventListener("click", function(e){
+      var b = e.target.closest(".listen");
+      if (b){ e.stopPropagation(); speak(b.getAttribute("data-say")); return; }
+      flip();
+    });
+    el.addEventListener("keydown", function(e){
+      if (e.target !== el) return;
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); flip(); }
+    });
+    cardsEl.appendChild(el);
+  });
+
+  /* ---------- 2. Match ---------- */
+  var mLeft = $("m-left"), mRight = $("m-right");
+  var selL = null, selR = null, matched = 0, mistakes = 0;
+  function meaningOf(letter){ for (var i=0;i<MATCH_RIGHT.length;i++){ if (MATCH_RIGHT[i].l === letter) return MATCH_RIGHT[i].t; } return ""; }
+  function buildMatch(){
+    mLeft.innerHTML = ""; mRight.innerHTML = "";
+    selL = selR = null; matched = 0; mistakes = 0;
+    MATCH_LEFT.forEach(function(it){
+      var li = document.createElement("li");
+      li.innerHTML = '<button class="m-btn" type="button" data-n="' + it.n + '"><span class="tag">' + it.n + '</span><span>' + it.html + '<span class="m-ans" hidden></span></span></button>';
+      mLeft.appendChild(li);
+    });
+    MATCH_RIGHT.forEach(function(it){
+      var li = document.createElement("li");
+      li.innerHTML = '<button class="m-btn" type="button" data-l="' + it.l + '"><span class="tag">' + it.l + '</span><span>' + it.t + '</span></button>';
+      mRight.appendChild(li);
+    });
+    updateMatch();
+  }
+  function updateMatch(){
+    var msg = "Matched " + matched + " of 6";
+    if (mistakes) msg += ". Mistakes: " + mistakes;
+    if (matched === 6) msg = (mistakes === 0 ? "All six matched with no mistakes. Well done!" : "All six matched. Mistakes: " + mistakes + ".");
+    $("m-status").textContent = msg;
+    $("c-match").textContent = matched + "/6";
+  }
+  function tryMatch(){
+    if (!selL || !selR) return;
+    var a = selL, b = selR;
+    selL = selR = null;
+    a.classList.remove("sel"); b.classList.remove("sel");
+    if (MATCH_KEY[a.getAttribute("data-n")] === b.getAttribute("data-l")){
+      [a,b].forEach(function(x){ x.classList.add("done"); x.disabled = true; });
+      var ans = a.querySelector(".m-ans");
+      ans.textContent = "= " + b.getAttribute("data-l") + ") " + meaningOf(b.getAttribute("data-l"));
+      ans.hidden = false;
+      matched++;
+    } else {
+      mistakes++;
+      [a,b].forEach(function(x){
+        x.classList.remove("wrong"); void x.offsetWidth; x.classList.add("wrong");
+        setTimeout(function(){ x.classList.remove("wrong"); }, 700);
+      });
+    }
+    updateMatch();
+  }
+  mLeft.addEventListener("click", function(e){
+    var b = e.target.closest(".m-btn"); if (!b || b.disabled) return;
+    if (selL) selL.classList.remove("sel");
+    selL = (selL === b) ? null : b;
+    if (selL) selL.classList.add("sel");
+    tryMatch();
+  });
+  mRight.addEventListener("click", function(e){
+    var b = e.target.closest(".m-btn"); if (!b || b.disabled) return;
+    if (selR) selR.classList.remove("sel");
+    selR = (selR === b) ? null : b;
+    if (selR) selR.classList.add("sel");
+    tryMatch();
+  });
+  $("m-reset").addEventListener("click", buildMatch);
+  buildMatch();
+
+  /* ---------- 3. Meaning quiz ---------- */
+  var quizEl = $("quiz");
+  var qOrder = QUIZ.slice(), qi = 0, qScore = 0;
+  function optByKey(k){ for (var i=0;i<OPTIONS.length;i++){ if (OPTIONS[i].k === k) return OPTIONS[i]; } return null; }
+  function renderQ(){
+    $("c-quiz").textContent = qScore + "/" + QUIZ.length;
+    if (qi >= qOrder.length){ renderQEnd(); return; }
+    var item = qOrder[qi];
+    var html =
+      '<div class="q-top"><span>Sentence ' + (qi+1) + ' of ' + qOrder.length + '</span><span>Score: ' + qScore + '</span></div>' +
+      '<div class="bar"><i style="width:' + (qi/qOrder.length*100) + '%"></i></div>' +
+      '<p class="q-sentence">' + md(item.s) + '</p>' +
+      '<div class="q-opts">';
+    OPTIONS.forEach(function(o){
+      html += '<button class="q-opt" type="button" data-k="' + o.k + '"><span class="tag">' + o.l + '</span><span>' + o.t + '</span></button>';
+    });
+    html += '</div><p class="feedback" aria-live="polite"></p>' +
+      '<button class="btn q-next" type="button" hidden>' + (qi === qOrder.length-1 ? 'See my score' : 'Next sentence') + '</button>';
+    quizEl.innerHTML = html;
+  }
+  function renderQEnd(){
+    var n = QUIZ.length;
+    var msg = qScore === n ? "Perfect! You know all six meanings." :
+              qScore >= n-2 ? "Very good. Check the ones you missed on the cards." :
+              "Go back to the cards in step 1, then try again.";
+    quizEl.innerHTML =
+      '<div class="q-end"><p class="score">' + qScore + '/' + n + '</p><p>' + msg + '</p>' +
+      '<button class="btn" type="button" id="q-again">Try again</button></div>';
+  }
+  quizEl.addEventListener("click", function(e){
+    if (e.target.closest("#q-again")){ qOrder = shuffle(QUIZ); qi = 0; qScore = 0; renderQ(); return; }
+    if (e.target.closest(".q-next")){ qi++; renderQ(); var s = quizEl.querySelector(".q-sentence"); if (s){ s.setAttribute("tabindex","-1"); s.focus({preventScroll:true}); } return; }
+    var b = e.target.closest(".q-opt"); if (!b || b.disabled) return;
+    var item = qOrder[qi], ok = b.getAttribute("data-k") === item.k;
+    var all = quizEl.querySelectorAll(".q-opt");
+    Array.prototype.forEach.call(all, function(x){
+      x.disabled = true;
+      if (x.getAttribute("data-k") === item.k) x.classList.add("ok");
+    });
+    if (!ok) b.classList.add("bad");
+    if (ok) qScore++;
+    var right = optByKey(item.k);
+    quizEl.querySelector(".feedback").innerHTML = ok
+      ? '<strong class="ok">Right.</strong><span class="why">' + EXPLAIN[item.k] + '</span>'
+      : '<strong class="bad">Not quite.</strong> The answer is ' + right.l + ') ' + right.t + '.<span class="why">' + EXPLAIN[item.k] + '</span>';
+    quizEl.querySelector(".q-top span:last-child").textContent = "Score: " + qScore;
+    $("c-quiz").textContent = qScore + "/" + QUIZ.length;
+    var nx = quizEl.querySelector(".q-next"); nx.hidden = false; nx.focus({preventScroll:true});
+  });
+  renderQ();
+
+  /* ---------- 4. Rewrite ---------- */
+  var rwEl = $("rw"), rwScore = 0;
+  function buildRW(){
+    rwEl.innerHTML = ""; rwScore = 0;
+    RW.forEach(function(it, i){
+      var li = document.createElement("li");
+      li.className = "rw-item";
+      li.setAttribute("data-i", i);
+      var inputLabel = "Answer for sentence " + (i+1);
+      var input = '<input type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="' + inputLabel + '">';
+      var target = (it.before ? it.before + ' ' : '') + input + (it.after === '.' ? '.' : ' ' + it.after);
+      li.innerHTML =
+        '<p class="rw-orig"><b>' + (i+1) + '</b>' + it.orig + '</p>' +
+        '<p class="rw-target"><span class="key">UP</span>' + target + '</p>' +
+        '<div class="rw-actions"><button class="btn rw-check" type="button">Check</button>' +
+        '<button class="btn ghost rw-show" type="button" hidden>Show answer</button>' +
+        '<span class="rw-fb" aria-live="polite"></span></div>';
+      rwEl.appendChild(li);
+    });
+    updateRW();
+  }
+  function updateRW(){
+    $("rw-status").textContent = "Correct: " + rwScore + " of " + RW.length;
+    $("c-rw").textContent = rwScore + "/" + RW.length;
+  }
+  function checkRW(li){
+    if (li.classList.contains("ok") || li.classList.contains("shown")) return;
+    var it = RW[+li.getAttribute("data-i")];
+    var input = li.querySelector("input"), fb = li.querySelector(".rw-fb");
+    var v = norm(input.value);
+    if (!v){ fb.className = "rw-fb"; fb.textContent = "Write your answer first."; input.focus(); return; }
+    var ok = it.ans.some(function(a){ return norm(a) === v; });
+    if (ok){
+      li.classList.remove("bad"); li.classList.add("ok");
+      input.readOnly = true;
+      li.querySelector(".rw-check").hidden = true;
+      li.querySelector(".rw-show").hidden = true;
+      fb.className = "rw-fb ok"; fb.textContent = "Correct!";
+      rwScore++; updateRW();
+    } else {
+      li.classList.add("bad");
+      fb.className = "rw-fb bad";
+      fb.textContent = v.indexOf("up") === -1 ? "Not quite. Remember to use up." : "Not quite. Think about the meaning and try again.";
+      li.querySelector(".rw-show").hidden = false;
+    }
+  }
+  rwEl.addEventListener("click", function(e){
+    var li = e.target.closest(".rw-item"); if (!li) return;
+    if (e.target.closest(".rw-check")) checkRW(li);
+    if (e.target.closest(".rw-show")){
+      var it = RW[+li.getAttribute("data-i")];
+      var input = li.querySelector("input"), fb = li.querySelector(".rw-fb");
+      var a = it.ans[0];
+      input.value = (it.before === "" ? a.charAt(0).toUpperCase() + a.slice(1) : a);
+      input.readOnly = true;
+      fitInput(input);
+      li.classList.remove("bad"); li.classList.add("shown");
+      li.querySelector(".rw-check").hidden = true;
+      li.querySelector(".rw-show").hidden = true;
+      fb.className = "rw-fb"; fb.textContent = "Answer shown. This one doesn't count.";
+    }
+  });
+  rwEl.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); checkRW(e.target.closest(".rw-item")); }
+  });
+  function fitInput(inp){ inp.style.width = Math.max(10.5, inp.value.length * 0.62 + 1.5) + "em"; }
+  rwEl.addEventListener("input", function(e){
+    if (e.target.tagName === "INPUT") fitInput(e.target);
+    var li = e.target.closest(".rw-item");
+    if (li && li.classList.contains("bad")){ li.classList.remove("bad"); }
+  });
+  $("rw-reset").addEventListener("click", buildRW);
+  buildRW();
+})();
+</script>
+</body>
+</html>
