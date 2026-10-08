@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>They made a difference — тренажёр B1+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ECEFF5; --paper:#FFFFFF; --ink:#1F2340; --muted:#5D6280;
+  --plum:#5B3E96; --plum-soft:#E7E0F4; --gold:#F2B705; --teal:#1C8C88; --teal-soft:#D8F0EE;
+  --red:#C8423B; --red-soft:#F8E1DF; --line:#D5D9E5;
+  --head:"Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--head);-webkit-tap-highlight-color:transparent;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+header{background:var(--plum);color:#fff;padding:calc(22px + env(safe-area-inset-top,0px)) 20px 0;position:relative;overflow:hidden}
+header .wrap{max-width:860px;margin:0 auto}
+h1{font-weight:800;font-size:clamp(34px,7vw,60px);line-height:.95;margin:0;letter-spacing:-.02em}
+h1 span{display:block;background:var(--gold);color:var(--plum);width:max-content;max-width:100%;padding:2px 12px 6px;margin-top:6px;transform:skewX(-6deg)}
+.sub{margin:14px 0 18px;font-size:16px;opacity:.9}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{font:600 16px var(--head);border:0;background:rgba(255,255,255,.14);color:#fff;padding:12px 18px;border-radius:12px 12px 0 0;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--bg);color:var(--plum)}
+nav button:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main{max-width:860px;margin:0 auto;padding:24px 16px 48px}
+section[hidden]{display:none}
+
+/* Cards */
+.card{background:var(--paper);border-radius:20px;padding:28px 26px 22px;border-left:10px solid var(--plum);min-height:300px;display:flex;flex-direction:column}
+.topline{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:15px}
+.word{font-weight:800;font-size:clamp(30px,6vw,46px);line-height:1.05;margin:18px 0 6px;letter-spacing:-.01em}
+.form{font-size:15px;color:var(--plum);font-weight:600;min-height:1em}
+.expl{font-family:var(--body);font-size:20px;line-height:1.55;margin:16px 0 0;max-width:62ch}
+.ru{margin-top:18px;background:var(--plum-soft);border-radius:14px;padding:14px 16px}
+.ru b{display:block;font-size:22px;color:var(--plum);margin-bottom:4px}
+.ru p{margin:0;font-family:var(--body);font-size:17px;line-height:1.5}
+.actions{display:flex;gap:10px;margin-top:auto;padding-top:22px;flex-wrap:wrap}
+.btn{font:700 16px var(--head);border:2px solid var(--ink);background:#fff;color:var(--ink);padding:11px 18px;border-radius:12px;cursor:pointer}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.ruBtn{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.ruBtn[aria-pressed="true"]{background:var(--plum);border-color:var(--plum);color:#fff}
+.btn:disabled{opacity:.35;cursor:default}
+.audio{width:52px;height:52px;border-radius:50%;border:0;background:var(--teal);color:#fff;font-size:22px;cursor:pointer;flex:none}
+.nav2{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+.dots{height:6px;background:var(--line);border-radius:6px;flex:1;overflow:hidden}
+.dots i{display:block;height:100%;background:var(--plum);transition:width .25s}
+
+/* Match */
+.panel{background:var(--paper);border-radius:20px;padding:22px 20px}
+.panel h2{margin:0 0 4px;font-size:24px}
+.hint{margin:0 0 16px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
+.col{display:flex;flex-direction:column;gap:10px}
+.tile{font:600 16px var(--head);text-align:left;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:12px 14px;cursor:pointer;line-height:1.35}
+.tile.def{font:400 16px var(--body)}
+.tile.sel{border-color:var(--plum);background:var(--plum-soft)}
+.tile.ok{border-color:var(--teal);background:var(--teal-soft);color:#0f5452;cursor:default}
+.tile.bad{border-color:var(--red);background:var(--red-soft);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.status{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px;flex-wrap:wrap}
+
+/* Gap */
+.sentence{font-family:var(--body);font-size:22px;line-height:1.6;margin:10px 0 20px}
+.gap{display:inline-block;min-width:120px;border-bottom:3px solid var(--plum);color:var(--plum);font-weight:600;text-align:center}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{font:600 17px var(--head);border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:14px;cursor:pointer;text-align:left}
+.opt.ok{border-color:var(--teal);background:var(--teal-soft)}
+.opt.bad{border-color:var(--red);background:var(--red-soft)}
+.tr{margin-top:12px;background:var(--plum-soft);border-radius:12px;padding:12px 14px;font-family:var(--body);font-size:17px;line-height:1.5}
+.tile small{display:block;font:400 14px var(--body);color:#0f5452;margin-top:4px}
+.feedback{min-height:26px;margin-top:14px;font-weight:600}
+.result{text-align:center;padding:30px 10px}
+.result .big{font-size:64px;font-weight:800;color:var(--plum);line-height:1}
+
+@media (max-width:560px){
+  .grid{grid-template-columns:1fr 1fr}
+  .tile{font-size:15px;padding:10px}
+  .tile.def{font-size:14px}
+  .opts{grid-template-columns:1fr}
+  .expl{font-size:18px}
+  .sentence{font-size:19px}
+  nav button{padding:10px 12px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>They made<span>a difference</span></h1>
+    <p class="sub">Активная лексика текста о работорговле и аболиционистах, уровень B1+</p>
+    <nav role="tablist">
+      <button role="tab" aria-selected="true" data-tab="cards">Карточки</button>
+      <button role="tab" aria-selected="false" data-tab="match">Соедини</button>
+      <button role="tab" aria-selected="false" data-tab="gap">Вставь слово</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="cards">
+    <article class="card">
+      <div class="topline"><span id="cnum"></span><button class="audio" id="say" aria-label="Послушать произношение">🔊</button></div>
+      <div class="word" id="cword"></div>
+      <div class="form" id="cform"></div>
+      <p class="expl" id="cexpl"></p>
+      <div class="ru" id="cru" hidden><b id="ctr"></b><p id="cexru"></p></div>
+      <div class="actions">
+        <button class="btn ruBtn" id="ruBtn" aria-pressed="false">RU</button>
+        <button class="btn" id="shuffle">Перемешать</button>
+      </div>
+    </article>
+    <div class="nav2">
+      <button class="btn" id="prev">Назад</button>
+      <div class="dots"><i id="bar"></i></div>
+      <button class="btn primary" id="next">Дальше</button>
+    </div>
+  </section>
+
+  <section id="match" hidden>
+    <div class="panel">
+      <h2>Соедини слово и объяснение</h2>
+      <p class="hint">Нажми на слово слева, затем на его объяснение справа.</p>
+      <div class="grid"><div class="col" id="mLeft"></div><div class="col" id="mRight"></div></div>
+      <div class="status"><span id="mStatus"></span><button class="btn primary" id="mNext" hidden>Следующий раунд</button></div>
+    </div>
+  </section>
+
+  <section id="gap" hidden>
+    <div class="panel" id="gPanel"></div>
+  </section>
+</main>
+
+<script>
+const W = [
+ {w:"make a difference", e:"to have a good effect on a person or a situation", ru:"изменить ситуацию к лучшему, повлиять", er:"оказать хорошее влияние на человека или ситуацию", s:"Even one kind teacher can ___ in a child's life.", a:"make a difference"},
+ {w:"the slave trade", e:"the business of buying and selling people as slaves", ru:"работорговля", er:"торговля людьми, которых покупали и продавали как рабов", s:"Ships carried millions of people across the Atlantic during ___.", a:"the slave trade"},
+ {w:"force somebody into something", f:"forced into lives of slavery", e:"to make somebody do or accept something they don't want", ru:"принуждать кого-то к чему-то, загонять во что-то", er:"заставить человека делать или принять то, чего он не хочет", s:"The prisoners were ___ hard work in the mines.", a:"forced into"},
+ {w:"an abolitionist", e:"a person who wanted to end slavery", ru:"аболиционист, сторонник отмены рабства", er:"человек, который добивался отмены рабства", s:"William Wilberforce was one of the most famous British ___.", a:"abolitionists"},
+ {w:"demolish", e:"to destroy something completely, for example a building or a system", ru:"разрушить, снести, уничтожить", er:"полностью уничтожить что-то, например здание или систему", s:"The old factory was ___ to build a new park.", a:"demolished"},
+ {w:"cruel", f:"cruel – crueller – the cruellest", e:"causing pain or suffering on purpose", ru:"жестокий", er:"намеренно причиняющий боль или страдания", s:"Hitting an animal is a ___ thing to do.", a:"cruel"},
+ {w:"approach", e:"to come closer to somebody or something", ru:"приближаться, подходить", er:"подходить ближе к кому-то или чему-то", s:"As the storm ___, the fishermen hurried back to the harbour.", a:"approached"},
+ {w:"beg for help", e:"to ask for help in a very strong, desperate way", ru:"умолять о помощи", er:"просить о помощи настойчиво и в отчаянии", s:"The lost hikers were ___ when the rescue team found them.", a:"begging for help"},
+ {w:"die of disease", f:"die of + illness", e:"to die because of an illness", ru:"умереть от болезни", er:"умереть по причине болезни", s:"In the 19th century, many children ___ like cholera.", a:"died of diseases"},
+ {w:"horrible conditions", e:"a very bad and unpleasant situation in which people live or work", ru:"ужасные условия", er:"очень плохая, тяжёлая обстановка, в которой люди живут или работают", s:"The workers lived in ___: no clean water, no beds, no light.", a:"horrible conditions"},
+ {w:"be horrified (by)", e:"to feel very shocked and upset because of something", ru:"прийти в ужас (от чего-то)", er:"быть сильно потрясённым и расстроенным из-за чего-то", s:"We were ___ by the pictures of the flood.", a:"horrified"},
+ {w:"enrage", e:"to make somebody extremely angry", ru:"приводить в ярость, бесить", er:"очень сильно разозлить кого-то", s:"The new parking rules ___ local drivers.", a:"enraged"},
+ {w:"local businessmen", e:"people who run companies in the area where they live", ru:"местные предприниматели", er:"люди, которые ведут бизнес в своём районе или городе", s:"When a big supermarket opened, ___ were afraid of losing customers.", a:"local businessmen"},
+ {w:"insist on (doing) something", e:"to say firmly that something must happen", ru:"настаивать на чём-то", er:"твёрдо говорить, что что-то обязательно должно произойти", s:"My grandma always ___ cooking a big dinner when we visit.", a:"insists on"},
+ {w:"vivid details", e:"very clear, strong descriptions that are easy to imagine", ru:"яркие, живые подробности", er:"очень чёткие описания, которые легко представить", s:"Her diary is full of ___ about life during the war.", a:"vivid details"},
+ {w:"slavery", f:"the anti-slavery movement", e:"the system in which people are owned by other people and forced to work", ru:"рабство (anti-slavery movement — движение против рабства)", er:"система, при которой одни люди владеют другими и заставляют их работать", s:"___ was finally abolished in the USA in 1865.", a:"Slavery"},
+ {w:"tirelessly", f:"work tirelessly", e:"with a lot of energy and without stopping", ru:"неустанно, не покладая рук", er:"с большой энергией и без остановки", s:"The nurses worked ___ through the night to help the injured.", a:"tirelessly"},
+ {w:"smash", f:"smash the laws", e:"to break something into pieces; to destroy something completely", ru:"разбить вдребезги; сокрушить, уничтожить", er:"разбить на куски; полностью уничтожить что-то", s:"The burglar ___ the window to get into the house.", a:"smashed"},
+ {w:"eventually", e:"in the end, after a long time or a lot of effort", ru:"в конце концов, в итоге", er:"в конце, спустя долгое время или много усилий", s:"We waited for hours, but ___ the train arrived.", a:"eventually"},
+ {w:"succeed in doing something", e:"to manage to do something that you tried to do", ru:"преуспеть в чём-то, суметь сделать", er:"справиться с тем, что пытался сделать", s:"After three attempts, she ___ passing her driving test.", a:"succeeded in"},
+ {w:"a total of", e:"the whole number when everything is added together", ru:"в общей сложности, всего", er:"общее число, когда всё сложено вместе", s:"He has visited Paris ___ five times.", a:"a total of"},
+ {w:"be separated from", e:"to be taken away from somebody, so you are not together any more", ru:"быть разлучённым с кем-то", er:"быть отделённым от кого-то, так что вы больше не вместе", s:"During the war, many children ___ their parents.", a:"were separated from"},
+ {w:"work as a maid", e:"to work as a woman servant who cleans and cooks in a house or hotel", ru:"работать служанкой, горничной", er:"работать прислугой, которая убирает и готовит в доме или гостинице", s:"Before she became a writer, she worked ___ in a big hotel.", a:"as a maid"},
+ {w:"capture", e:"to catch somebody and keep them as a prisoner", ru:"поймать, захватить в плен", er:"поймать человека и держать его как пленника", s:"The police ___ the thief two days later.", a:"captured"},
+ {w:"a salt pond", e:"a shallow pool of sea water; when the water dries in the sun, salt stays", ru:"соляной пруд (солеварня)", er:"мелкий водоём с морской водой; когда вода высыхает на солнце, остаётся соль", s:"Workers collected salt from the shallow ___ near the coast.", a:"salt ponds"},
+ {w:"cause blisters", e:"to make painful bubbles of liquid appear on your skin", ru:"вызывать волдыри, натирать мозоли", er:"вызывать на коже болезненные пузыри с жидкостью", s:"My new shoes ___ on both my feet.", a:"caused blisters"},
+ {w:"strike", f:"strike – struck – struck", e:"to hit somebody or something hard", ru:"ударить, бить", er:"сильно ударить кого-то или что-то", s:"The tree was ___ by lightning during the storm.", a:"struck"}
+];
+
+const T = {
+ "make a difference":"Даже один добрый учитель может изменить жизнь ребёнка к лучшему.",
+ "the slave trade":"Во время работорговли корабли перевезли через Атлантику миллионы людей.",
+ "forced into":"Заключённых заставляли выполнять тяжёлую работу в шахтах.",
+ "abolitionists":"Уильям Уилберфорс был одним из самых известных британских аболиционистов.",
+ "demolished":"Старую фабрику снесли, чтобы построить новый парк.",
+ "cruel":"Бить животное — жестокий поступок.",
+ "approached":"Когда приблизился шторм, рыбаки поспешили обратно в гавань.",
+ "begging for help":"Когда спасатели нашли заблудившихся туристов, те умоляли о помощи.",
+ "died of diseases":"В XIX веке многие дети умирали от болезней, например от холеры.",
+ "horrible conditions":"Рабочие жили в ужасных условиях: ни чистой воды, ни кроватей, ни света.",
+ "horrified":"Мы пришли в ужас от фотографий наводнения.",
+ "enraged":"Новые правила парковки привели местных водителей в ярость.",
+ "local businessmen":"Когда открылся большой супермаркет, местные предприниматели боялись потерять покупателей.",
+ "insists on":"Бабушка всегда настаивает на том, чтобы приготовить большой ужин, когда мы приезжаем.",
+ "vivid details":"Её дневник полон ярких подробностей о жизни во время войны.",
+ "Slavery":"Рабство в США было окончательно отменено в 1865 году.",
+ "tirelessly":"Медсёстры всю ночь неустанно работали, помогая раненым.",
+ "smashed":"Грабитель разбил окно, чтобы проникнуть в дом.",
+ "eventually":"Мы ждали несколько часов, но в конце концов поезд пришёл.",
+ "succeeded in":"С третьей попытки она сумела сдать экзамен по вождению.",
+ "a total of":"Он побывал в Париже в общей сложности пять раз.",
+ "were separated from":"Во время войны многие дети были разлучены с родителями.",
+ "as a maid":"Прежде чем стать писательницей, она работала горничной в большом отеле.",
+ "captured":"Полиция поймала вора через два дня.",
+ "salt ponds":"Рабочие собирали соль в мелких соляных прудах у побережья.",
+ "caused blisters":"Новые туфли натёрли мне мозоли на обеих ногах.",
+ "struck":"Во время грозы в дерево ударила молния."
+};
+W.forEach(x => x.t = T[x.a]);
+
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* Tabs */
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('nav button').forEach(x => x.setAttribute('aria-selected', x === b));
+  ['cards','match','gap'].forEach(id => $(id).hidden = id !== b.dataset.tab);
+  if (b.dataset.tab === 'match' && !mStarted) startMatch();
+  if (b.dataset.tab === 'gap' && !gStarted) startGap();
+}));
+
+/* Speech */
+let voice = null;
+function pickVoice(){
+  const v = speechSynthesis.getVoices();
+  voice = v.find(x => x.lang === 'en-GB') || v.find(x => x.lang && x.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(t){
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* Cards */
+let deck = W.slice(), ci = 0;
+function speakText(c){ return c.w.replace(/\s*\(.*?\)\s*/g,' ').replace(/somebody|something/g, m => m).trim(); }
+function renderCard(){
+  const c = deck[ci];
+  $('cnum').textContent = `${ci + 1} / ${deck.length}`;
+  $('cword').textContent = c.w;
+  $('cform').textContent = c.f || '';
+  $('cexpl').textContent = c.e;
+  $('ctr').textContent = c.ru;
+  $('cexru').textContent = c.er;
+  $('cru').hidden = true;
+  $('ruBtn').setAttribute('aria-pressed','false');
+  $('prev').disabled = ci === 0;
+  $('next').disabled = ci === deck.length - 1;
+  $('bar').style.width = ((ci + 1) / deck.length * 100) + '%';
+}
+$('ruBtn').onclick = () => { const open = $('cru').hidden; $('cru').hidden = !open; $('ruBtn').setAttribute('aria-pressed', open); };
+$('say').onclick = () => say(speakText(deck[ci]));
+$('prev').onclick = () => { if (ci > 0){ ci--; renderCard(); } };
+$('next').onclick = () => { if (ci < deck.length - 1){ ci++; renderCard(); } };
+$('shuffle').onclick = () => { deck = shuffle(W); ci = 0; renderCard(); };
+document.addEventListener('keydown', e => {
+  if ($('cards').hidden) return;
+  if (e.key === 'ArrowRight') $('next').click();
+  if (e.key === 'ArrowLeft') $('prev').click();
+});
+renderCard();
+
+/* Match */
+let mStarted = false, rounds = [], ri = 0, sel = null, left = 0, mistakes = 0;
+function startMatch(){
+  mStarted = true; mistakes = 0;
+  const all = shuffle(W), n = Math.ceil(all.length / 6), size = Math.ceil(all.length / n);
+  rounds = []; for (let i = 0; i < all.length; i += size) rounds.push(all.slice(i, i + size));
+  ri = 0; renderRound();
+}
+function renderRound(){
+  const r = rounds[ri]; sel = null; left = r.length;
+  $('mLeft').innerHTML = ''; $('mRight').innerHTML = '';
+  $('mNext').hidden = true;
+  $('mStatus').textContent = `Раунд ${ri + 1} из ${rounds.length}`;
+  shuffle(r).forEach(c => {
+    const b = document.createElement('button'); b.className = 'tile'; b.textContent = c.w; b.dataset.k = c.w;
+    b.onclick = () => { if (b.classList.contains('ok')) return; document.querySelectorAll('#mLeft .tile').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); sel = b; say(speakText(c)); };
+    $('mLeft').appendChild(b);
+  });
+  shuffle(r).forEach(c => {
+    const b = document.createElement('button'); b.className = 'tile def'; b.textContent = c.e; b.dataset.k = c.w;
+    b.onclick = () => {
+      if (!sel || b.classList.contains('ok')) return;
+      if (sel.dataset.k === b.dataset.k){
+        sel.classList.remove('sel'); sel.classList.add('ok'); b.classList.add('ok'); { const r = document.createElement('small'); r.textContent = W.find(x => x.w === sel.dataset.k).ru; sel.appendChild(r); } sel = null; left--;
+        if (left === 0){
+          if (ri < rounds.length - 1){ $('mNext').hidden = false; $('mNext').textContent = 'Следующий раунд'; $('mStatus').textContent = `Раунд ${ri + 1} пройден`; }
+          else { $('mNext').hidden = false; $('mNext').textContent = 'Начать заново'; $('mStatus').textContent = `Готово! Ошибок: ${mistakes}`; }
+        }
+      } else {
+        mistakes++; b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad');
+        setTimeout(() => b.classList.remove('bad'), 450);
+      }
+    };
+    $('mRight').appendChild(b);
+  });
+}
+$('mNext').onclick = () => { if (ri < rounds.length - 1){ ri++; renderRound(); } else startMatch(); };
+
+/* Gap fill */
+let gStarted = false, gq = [], gi = 0, score = 0;
+function startGap(){ gStarted = true; gq = shuffle(W); gi = 0; score = 0; renderGap(); }
+function renderGap(){
+  const p = $('gPanel');
+  if (gi >= gq.length){
+    p.innerHTML = `<div class="result"><div class="big">${score} / ${gq.length}</div><p>правильных ответов с первой попытки</p><button class="btn primary" id="gAgain">Пройти ещё раз</button></div>`;
+    $('gAgain').onclick = startGap; return;
+  }
+  const q = gq[gi];
+  const others = shuffle(W.filter(x => x.a.toLowerCase() !== q.a.toLowerCase())).slice(0, 3).map(x => x.a);
+  const opts = shuffle([q.a, ...others]);
+  const parts = q.s.split('___');
+  p.innerHTML = `<h2>Вставь слово</h2><p class="hint">Вопрос ${gi + 1} из ${gq.length}. Выбери вариант, который подходит по смыслу и форме.</p>
+    <p class="sentence"></p><div class="opts"></div><div class="feedback" id="gFb"></div><div class="tr" id="gTr" hidden></div>
+    <div class="status"><span id="gScore">Счёт: ${score}</span><button class="btn primary" id="gNext" hidden>Дальше</button></div>`;
+  const sEl = p.querySelector('.sentence');
+  sEl.append(parts[0]); const g = document.createElement('span'); g.className = 'gap'; g.innerHTML = '&nbsp;'; sEl.append(g); sEl.append(parts[1]);
+  let first = true, done = false;
+  opts.forEach(o => {
+    const b = document.createElement('button'); b.className = 'opt'; b.textContent = o;
+    b.onclick = () => {
+      if (done) return;
+      if (o === q.a){
+        done = true; b.classList.add('ok'); g.textContent = o; if (first) score++; $('gScore').textContent = `Счёт: ${score}`;
+        $('gFb').style.color = 'var(--teal)'; $('gFb').textContent = first ? 'Верно!' : 'Верно, со второй попытки.';
+        $('gNext').hidden = false; $('gTr').textContent = q.t; $('gTr').hidden = false; say(q.s.replace('___', q.a));
+      } else {
+        first = false; b.classList.add('bad'); b.disabled = true;
+        $('gFb').style.color = 'var(--red)'; $('gFb').textContent = 'Не подходит, попробуй ещё.';
+      }
+    };
+    p.querySelector('.opts').appendChild(b);
+  });
+  $('gNext').onclick = () => { gi++; renderGap(); };
+}
+</script>
+</body>
+</html>
