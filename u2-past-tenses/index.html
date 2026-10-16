@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Past tenses — памятка B1+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1F2430; --muted:#5B6272; --line:#C9CED8; --paper:#FFFFFF;
+    --ps:#1E8C8A;  /* past simple — бирюза, как в учебнике */
+    --pc:#C0720A;  /* past continuous */
+    --pp:#3D4FA8;  /* past perfect simple */
+    --ppc:#9B3D7A; /* past perfect continuous */
+    --display:"Bricolage Grotesque", "Arial Narrow", Arial, sans-serif;
+    --body:"PT Sans", Verdana, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  @page{size:A4;margin:9mm}
+  html,body{margin:0;background:#E9ECF1;color:var(--ink);font-family:var(--body)}
+  .sheet{width:210mm;min-height:297mm;margin:12px auto;background:var(--paper);padding:9mm 10mm;
+         display:flex;flex-direction:column;gap:3.2mm;font-size:9.7pt;line-height:1.32}
+  @media print{
+    html,body{background:#fff}
+    .sheet{width:auto;min-height:0;margin:0;padding:0}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+  @media screen and (max-width:820px){
+    .sheet{width:100%;min-height:0;margin:0;padding:16px}
+    .grid{grid-template-columns:1fr!important}
+  }
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:8mm;border-bottom:2px solid var(--ink);padding-bottom:2.2mm}
+  h1{font-family:var(--display);font-weight:800;font-size:25pt;line-height:1;margin:0;letter-spacing:-.01em}
+  h1 small{display:block;font-family:var(--body);font-weight:400;font-size:10pt;color:var(--muted);margin-top:1.4mm;letter-spacing:0}
+  .legend{display:flex;gap:4mm;font-size:8.2pt;color:var(--muted);align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .legend span{display:inline-flex;align-items:center;gap:1.4mm}
+  .legend svg{flex:none}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:3.2mm}
+  .card{border:1.5px solid var(--c);border-radius:3mm;padding:2.6mm 3.2mm 2.8mm;position:relative;
+        background:var(--tint)}
+  .card.ps{--c:var(--ps);--tint:#1E8C8A0D}
+  .card.pc{--c:var(--pc);--tint:#C0720A0D}
+  .card.pp{--c:var(--pp);--tint:#3D4FA80D}
+  .card.ppc{--c:var(--ppc);--tint:#9B3D7A0D}
+  .head{display:flex;align-items:baseline;gap:2.2mm;flex-wrap:wrap}
+  .letter{font-family:var(--display);font-weight:800;font-size:17pt;color:var(--c);line-height:1}
+  h2{font-family:var(--display);font-weight:600;font-size:13pt;margin:0;line-height:1}
+  .gist{flex-basis:100%;padding-left:6mm;font-size:9pt;color:var(--c);font-weight:700;margin-top:.6mm}
+  .formula{display:grid;grid-template-columns:auto 1fr;gap:.4mm 2mm;margin:2.2mm 0 1mm;font-size:9.2pt}
+  .formula b{color:var(--c);width:3mm;text-align:center}
+  .formula code{font-family:var(--body);font-weight:700}
+  .tl{display:block;width:100%;height:auto;margin:.6mm 0 .8mm;color:var(--c)}
+  .tl text{font-family:var(--body);font-size:10px;fill:var(--muted)}
+  .tl .em{fill:var(--c);font-weight:700}
+  .when{margin:0 0 1.2mm}
+  .ex{margin:0;padding:0;list-style:none}
+  .ex li{padding-left:3.6mm;position:relative;margin-bottom:.6mm}
+  .ex li::before{content:"";position:absolute;left:0;top:.55em;width:1.6mm;height:1.6mm;border-radius:50%;background:var(--c)}
+  .ex mark{background:none;color:var(--c);font-weight:700}
+  .ex i{color:var(--muted);font-style:normal;font-size:8.6pt}
+  .markers{margin-top:1.4mm;font-size:8.6pt;color:var(--muted)}
+  .markers strong{color:var(--ink)}
+
+  .story{border-radius:3mm;background:#F3F5F8;padding:2.8mm 3.6mm}
+  .story h3,.traps h3{font-family:var(--body);font-weight:700;font-weight:600;font-size:11.5pt;margin:0 0 1.4mm}
+  .story p{margin:0;font-size:10.6pt;line-height:1.55}
+  .t{font-weight:700;border-bottom:2px solid currentColor;padding-bottom:.2mm}
+  .t.ps{color:var(--ps)} .t.pc{color:var(--pc)} .t.pp{color:var(--pp)} .t.ppc{color:var(--ppc)}
+  .story .key{margin-top:1.4mm;font-size:8.4pt;color:var(--muted)}
+
+  .traps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3.2mm}
+  .trap{border-top:2px solid var(--ink);padding-top:1.6mm;font-size:8.9pt}
+  .trap h4{margin:0 0 1mm;font-size:9.4pt}
+  .trap p{margin:0 0 .8mm}
+  .ok{color:var(--ps);font-weight:700} .no{color:#B3261E;font-weight:700;text-decoration:line-through}
+  footer{margin-top:auto;font-size:7.4pt;color:var(--muted);text-align:right}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <h1>Four past tenses<small>Памятка B1+: как рассказать историю в прошлом</small></h1>
+    <div class="legend" aria-label="Условные обозначения на схемах">
+      <span><svg width="18" height="12" viewBox="0 0 18 12"><path d="M3 3l12 6M15 3L3 9" stroke="#1F2430" stroke-width="2"/></svg>событие (закончилось)</span>
+      <span><svg width="26" height="12" viewBox="0 0 26 12"><path d="M1 6q3-5 6 0t6 0t6 0t6 0" fill="none" stroke="#1F2430" stroke-width="2"/></svg>процесс</span>
+      <span><svg width="10" height="14" viewBox="0 0 10 14"><path d="M5 1v12" stroke="#1F2430" stroke-width="1.6" stroke-dasharray="2 2"/></svg>точка отсчёта в прошлом</span>
+    </div>
+  </header>
+
+  <section class="grid">
+
+    <!-- b: Past simple -->
+    <article class="card ps">
+      <div class="head"><span class="letter">b</span><h2>Past simple</h2><span class="gist">факт: случилось и закончилось</span></div>
+      <div class="formula">
+        <b>+</b><code>V2 / V-ed &nbsp;<span style="font-weight:400;color:var(--muted)">(went, played)</span></code>
+        <b>–</b><code>didn't + V</code>
+        <b>?</b><code>Did … + V?</code>
+      </div>
+      <svg class="tl" viewBox="0 0 320 50" role="img" aria-label="Одна точка в прошлом">
+        <line x1="8" y1="30" x2="300" y2="30" stroke="#1F2430" stroke-width="1.4"/>
+        <path d="M300 26l8 4-8 4z" fill="#1F2430"/>
+        <line x1="282" y1="24" x2="282" y2="36" stroke="#1F2430" stroke-width="2"/>
+        <text x="282" y="48" text-anchor="middle">now</text>
+        <path d="M144 22l16 16M160 22l-16 16" stroke="currentColor" stroke-width="3"/>
+        <text x="152" y="14" text-anchor="middle" class="em">visited London</text>
+        <text x="152" y="48" text-anchor="middle">last summer</text>
+      </svg>
+      <p class="when"><strong>Когда:</strong> законченное действие в определённый момент прошлого; цепочка событий одно за другим.</p>
+      <ul class="ex">
+        <li>I <mark>visited</mark> London last summer.</li>
+        <li>She <mark>opened</mark> the door, <mark>turned on</mark> the light and <mark>sat</mark> down. <i>(по порядку)</i></li>
+      </ul>
+      <p class="markers"><strong>Маркеры:</strong> yesterday, last week, two days ago, in 2020, then, when</p>
+    </article>
+
+    <!-- c: Past continuous -->
+    <article class="card pc">
+      <div class="head"><span class="letter">c</span><h2>Past continuous</h2><span class="gist">процесс в момент прошлого</span></div>
+      <div class="formula">
+        <b>+</b><code>was / were + V-ing</code>
+        <b>–</b><code>wasn't / weren't + V-ing</code>
+        <b>?</b><code>Was / Were … V-ing?</code>
+      </div>
+      <svg class="tl" viewBox="0 0 320 50" role="img" aria-label="Процесс, который прерывает короткое событие">
+        <line x1="8" y1="30" x2="300" y2="30" stroke="#1F2430" stroke-width="1.4"/>
+        <path d="M300 26l8 4-8 4z" fill="#1F2430"/>
+        <line x1="282" y1="24" x2="282" y2="36" stroke="#1F2430" stroke-width="2"/>
+        <text x="282" y="48" text-anchor="middle">now</text>
+        <path d="M70 30q7-11 14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="140" y="12" text-anchor="middle" class="em">was walking home</text>
+        <path d="M164 22l16 16M180 22l-16 16" stroke="#1E8C8A" stroke-width="2.4"/>
+        <text x="172" y="48" text-anchor="middle">it started to rain</text>
+      </svg>
+      <p class="when"><strong>Когда:</strong> действие было в процессе в конкретный момент; фон истории. Короткое событие «врезается» в процесс — оно в past simple.</p>
+      <ul class="ex">
+        <li>At 8 pm yesterday I <mark>was doing</mark> my homework.</li>
+        <li>I <mark>was walking</mark> home when it <span style="color:var(--ps);font-weight:700">started</span> to rain.</li>
+      </ul>
+      <p class="markers"><strong>Маркеры:</strong> while, when, at 5 o'clock yesterday, all evening</p>
+    </article>
+
+    <!-- a: Past perfect simple -->
+    <article class="card pp">
+      <div class="head"><span class="letter">a</span><h2>Past perfect simple</h2><span class="gist">случилось ДО другого прошлого</span></div>
+      <div class="formula">
+        <b>+</b><code>had + V3 &nbsp;<span style="font-weight:400;color:var(--muted)">(had gone, had finished)</span></code>
+        <b>–</b><code>hadn't + V3</code>
+        <b>?</b><code>Had … + V3?</code>
+      </div>
+      <svg class="tl" viewBox="0 0 320 50" role="img" aria-label="Событие раньше точки отсчёта в прошлом">
+        <line x1="8" y1="30" x2="300" y2="30" stroke="#1F2430" stroke-width="1.4"/>
+        <path d="M300 26l8 4-8 4z" fill="#1F2430"/>
+        <line x1="282" y1="24" x2="282" y2="36" stroke="#1F2430" stroke-width="2"/>
+        <text x="282" y="48" text-anchor="middle">now</text>
+        <path d="M82 22l16 16M98 22l-16 16" stroke="currentColor" stroke-width="3"/>
+        <text x="90" y="48" text-anchor="middle" class="em">1. film had started</text>
+        <line x1="200" y1="6" x2="200" y2="40" stroke="#1F2430" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <text x="200" y="48" text-anchor="middle">2. we got there</text>
+        <path d="M194 13 Q150 0 104 20" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M104 20l9-1-3 7z" fill="currentColor"/>
+      </svg>
+      <p class="when"><strong>Когда:</strong> смотрим из точки в прошлом назад: что уже произошло к тому моменту.</p>
+      <ul class="ex">
+        <li>When we got to the cinema, the film <mark>had</mark> already <mark>started</mark>.</li>
+        <li>She <mark>had never seen</mark> snow before she moved to Moscow.</li>
+      </ul>
+      <p class="markers"><strong>Маркеры:</strong> already, just, never, before, after, by the time, by 6 pm</p>
+    </article>
+
+    <!-- d: Past perfect continuous -->
+    <article class="card ppc">
+      <div class="head"><span class="letter">d</span><h2>Past perfect continuous</h2><span class="gist">долго шло ДО момента в прошлом</span></div>
+      <div class="formula">
+        <b>+</b><code>had been + V-ing</code>
+        <b>–</b><code>hadn't been + V-ing</code>
+        <b>?</b><code>Had … been + V-ing?</code>
+      </div>
+      <svg class="tl" viewBox="0 0 320 50" role="img" aria-label="Процесс, который длился до точки отсчёта в прошлом">
+        <line x1="8" y1="30" x2="300" y2="30" stroke="#1F2430" stroke-width="1.4"/>
+        <path d="M300 26l8 4-8 4z" fill="#1F2430"/>
+        <line x1="282" y1="24" x2="282" y2="36" stroke="#1F2430" stroke-width="2"/>
+        <text x="282" y="48" text-anchor="middle">now</text>
+        <path d="M60 30q7-11 14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0t14 0" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="130" y="12" text-anchor="middle" class="em">had been waiting for an hour</text>
+        <line x1="200" y1="6" x2="200" y2="40" stroke="#1F2430" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <text x="200" y="48" text-anchor="middle">the bus came</text>
+      </svg>
+      <p class="when"><strong>Когда:</strong> важно, <em>как долго</em> что-то длилось до момента в прошлом, или нужно объяснить причину (почему устал, мокрый, злой).</p>
+      <ul class="ex">
+        <li>I <mark>had been waiting</mark> for an hour when the bus finally came.</li>
+        <li>He was tired because he <mark>had been playing</mark> football all afternoon.</li>
+      </ul>
+      <p class="markers"><strong>Маркеры:</strong> for, since, how long, all day, before, when</p>
+    </article>
+
+  </section>
+
+  <section class="story">
+    <h3>Одна история — все четыре времени</h3>
+    <p>When I <span class="t ps">arrived</span> at the station, my train <span class="t pp">had</span> already <span class="t pp">left</span>.
+       I <span class="t ppc">had been running</span> for ten minutes, so I <span class="t pc">was breathing</span> hard.
+       While I <span class="t pc">was waiting</span> for the next one, I <span class="t ps">called</span> Mum.</p>
+    <p class="key">Цвет = время: <span style="color:var(--ps);font-weight:700">past simple</span>, <span style="color:var(--pc);font-weight:700">past continuous</span>, <span style="color:var(--pp);font-weight:700">past perfect simple</span>, <span style="color:var(--ppc);font-weight:700">past perfect continuous</span>.</p>
+  </section>
+
+  <section>
+    <div class="traps">
+      <div class="trap">
+        <h4>1. When + past simple или past perfect?</h4>
+        <p>When I arrived, she <b>left</b>. <i style="color:var(--muted)">— я пришёл, потом она ушла.</i></p>
+        <p>When I arrived, she <b>had left</b>. <i style="color:var(--muted)">— она ушла ещё до меня.</i></p>
+      </div>
+      <div class="trap">
+        <h4>2. Сколько сделал или как долго делал?</h4>
+        <p>He <b>had written</b> three letters. <i style="color:var(--muted)">— результат, сколько.</i></p>
+        <p>He <b>had been writing</b> for two hours. <i style="color:var(--muted)">— процесс, как долго.</i></p>
+      </div>
+      <div class="trap">
+        <h4>3. Глаголы состояния без -ing</h4>
+        <p>know, like, want, believe, own, understand</p>
+        <p><span class="ok">I had known</span> him for years. &nbsp;<span class="no">had been knowing</span></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Yo Yo English, B1+. Опора: R. Murphy, English Grammar in Use (CUP), units 5–6, 15–16; Oxford Learner's Dictionaries Grammar</footer>
+</main>
+</body>
+</html>
