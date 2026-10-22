@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Think 3, Unit 1: работа над ошибками</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f2433; --muted:#5d6475; --line:#e3e6ee; --soft:#f5f7fb;
+  --marker:#ffe14d; --blue:#2d5bd7; --blue-ink:#ffffff;
+  --ok:#1f8a4c; --ok-bg:#e7f6ec; --bad:#c93a3a; --bad-bg:#fdecec;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171d; --ink:#eef0f5; --muted:#a3a9b8; --line:#2c303b; --soft:#1d2028;
+    --marker:#b8960f; --blue:#6f93ff; --blue-ink:#0d1020;
+    --ok:#4cc27c; --ok-bg:#16301f; --bad:#ff7b7b; --bad-bg:#3a1c1c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171d; --ink:#eef0f5; --muted:#a3a9b8; --line:#2c303b; --soft:#1d2028;
+  --marker:#b8960f; --blue:#6f93ff; --blue-ink:#0d1020;
+  --ok:#4cc27c; --ok-bg:#16301f; --bad:#ff7b7b; --bad-bg:#3a1c1c;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 "Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 60px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar{max-width:760px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:12px}
+.bar h1{font-size:17px;font-weight:800;margin:0;flex:1;line-height:1.2}
+.score{font-weight:600;font-size:15px;white-space:nowrap;padding:5px 10px;border-radius:999px;background:var(--soft);border:1px solid var(--line)}
+nav.tabs{max-width:760px;margin:0 auto;padding:0 18px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 14px/1 inherit;font-family:inherit;padding:8px 12px;border-radius:999px;cursor:pointer}
+nav.tabs button[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.intro{padding:26px 0 6px}
+.intro h2{font-size:30px;line-height:1.15;margin:0 0 8px;font-weight:800}
+.intro p{margin:0;color:var(--muted)}
+section.part{display:none;padding-top:18px}
+section.part.on{display:block}
+.part h2{font-size:24px;margin:0 0 6px;font-weight:800}
+.rule{background:var(--soft);border-left:4px solid var(--marker);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0 18px}
+.rule p{margin:0 0 6px}.rule p:last-child{margin:0}
+mark,.hl{background:var(--marker);color:inherit;padding:0 3px;border-radius:3px;font-weight:600}
+.item{border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.item .q{margin:0 0 10px}
+.item .n{color:var(--muted);font-weight:600;margin-right:6px}
+.dlg{display:grid;gap:2px;margin:0 0 10px}
+.dlg span{color:var(--muted);font-weight:600;margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer;min-height:44px}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-bg)}
+.fb.bad{background:var(--bad-bg)}
+.fb b.v{display:block;margin-bottom:2px}
+.fb.ok b.v{color:var(--ok)} .fb.bad b.v{color:var(--bad)}
+.build .slot{min-height:48px;border:1.5px dashed var(--line);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.build .pool{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tile{font:inherit;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);padding:6px 10px;border-radius:8px;cursor:pointer;min-height:40px}
+.tile:disabled{opacity:.35;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 15px/1 inherit;font-family:inherit;border:0;background:var(--blue);color:var(--blue-ink);padding:11px 16px;border-radius:10px;cursor:pointer;min-height:44px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.card{perspective:900px;min-height:200px}
+.card .in{position:relative;width:100%;height:100%;min-height:200px;transition:transform .45s;transform-style:preserve-3d}
+.card.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--line);border-radius:14px;padding:14px;background:var(--bg);display:flex;flex-direction:column;cursor:pointer}
+.front{justify-content:center;align-items:center;text-align:center;gap:10px}
+.front .ph{font-size:22px;font-weight:800;line-height:1.2}
+.front .hint{font-size:13px;color:var(--muted)}
+.back{transform:rotateY(180deg);gap:6px;font-size:15px}
+.card:not(.flip) .back{pointer-events:none}
+.card.flip .front{pointer-events:none}
+.back .ex{color:var(--muted);font-style:italic}
+.back .ru{display:none;font-weight:600}
+.back .ru.show{display:block}
+.back .tools{margin-top:auto;display:flex;gap:8px;align-items:center}
+.icon{font:600 14px/1 inherit;font-family:inherit;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);width:40px;height:40px;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.icon svg{width:18px;height:18px}
+.sum{display:grid;gap:8px}
+.sum .r{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}
+.big{font-size:44px;font-weight:800;margin:6px 0}
+.next{margin-top:14px}
+@media (prefers-reduced-motion: reduce){.card .in{transition:none}}
+@media (max-width:520px){.intro h2{font-size:25px}.bar h1{font-size:15px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="bar"><h1>Think 3, Unit 1: работа над ошибками</h1><span class="score" id="score" aria-live="polite">0 / 48</span></div>
+  <nav class="tabs" id="tabs" aria-label="Разделы"></nav>
+</header>
+<main class="wrap">
+  <div class="intro" id="intro">
+    <h2>Тренируем то, что было трудным в тесте</h2>
+    <p>Все задания — новые предложения на самые трудные темы Unit 1. После каждого ответа — объяснение на русском.</p>
+  </div>
+  <div id="parts"></div>
+</main>
+<script>
+const SPEAK_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+
+const CARDS=[
+ ["give up","stop doing something, often a bad habit","I want to give up sweets.","бросить (привычку)"],
+ ["take up","start a new hobby or activity","She took up tennis last year.","начать заниматься (хобби)"],
+ ["take the chance","use a good opportunity when it comes","They offered free classes, so I took the chance.","воспользоваться шансом"],
+ ["change your ways","start behaving better than before","He must change his ways if he wants to pass.","измениться, взяться за ум"],
+ ["struggle with","find something very hard to do","I'm struggling with this maths problem.","с трудом справляться с чем-то"],
+ ["travel the world","visit lots of different countries","It's my dream to travel the world.","путешествовать по миру"],
+ ["leave school","finish your education as a teenager and stop going to lessons","My grandad left school at 15.","окончить или бросить школу"],
+ ["retire","stop working, usually when you are old","He retired at the age of 60.","уйти на пенсию"],
+ ["settle down","start a calm life with a home and a family","She settled down in her thirties.","остепениться"],
+ ["get a degree","finish university and receive a diploma","My aunt got a degree in Physics.","получить диплом"],
+ ["spend time doing","use your hours for an activity","I spend an hour a day reading.","тратить время на что-то"],
+ ["be up late","stay awake for a long time at night, after midnight","I'm often up late on Fridays.","не спать допоздна"],
+ ["it's up to me","I am the person who must decide","It's up to me to choose the film.","мне решать; это зависит от меня"],
+ ["What's up with…?","is there a problem with someone?","What's up with Tom? He looks sad.","что случилось с…?"],
+ ["enjoy doing","have a really good time with an activity","I enjoy playing the guitar.","получать удовольствие от…"],
+ ["feel like doing","want to do something right now","I don't feel like going out tonight.","хотеть (сейчас), быть в настроении"]
+];
+
+/* t: mcq | build. a = правильный ответ (для mcq — первый вариант в o). c = комментарий. */
+const PARTS=[
+{id:"words",title:"Слова и фразы юнита",rule:["Эти фразы в тесте не узнала почти вся группа: <b>spend</b> (10 из 10 ошибок), <b>didn't</b> (9 из 10), <b>be up late</b> (8 из 10), <b>give up</b> (8 из 10).","Учим их целиком, как одно слово."],items:[
+ {q:"I ___ about two hours a day on my homework.",o:["spend","take","get"],c:"<b>spend</b> + время = тратить время на что-то. Take и get так не говорят."},
+ {q:"My brother is always up really ___ — he goes to bed at 1 am!",o:["late","long","high"],c:"<b>be up late</b> — не спать допоздна. Подсказка — «ложится в час ночи»."},
+ {q:"I can't decide for you. It's up to ___.",o:["you","me","us"],c:"<b>it's up to you</b> — тебе решать. «Я не могу решить за тебя», значит, решает собеседник."},
+ {q:"___ up with Tom? He looks really sad.",o:["What's","Why's","How's"],c:"<b>What's up with…?</b> — что случилось с…? Это устойчивая фраза, только с what."},
+ {q:"She asked me to help, but I told her I ___ want to.",o:["didn't","don't","wasn't"],c:"Told — прошлое, поэтому и отказ в прошлом: <b>didn't want</b>. После was нужен бы -ing или прилагательное."},
+ {q:"My dad wants to ___ up sweets — he eats too many.",o:["give","make","break"],c:"<b>give up</b> — бросить привычку. Break up — расстаться, make up — помириться или выдумать."},
+ {q:"When the club offered a free trip, I ___ the chance.",o:["took","made","did"],c:"<b>take the chance</b> — воспользоваться шансом. Прошедшее — took."},
+ {q:"He's lazy. If he wants good marks, he has to change his ___.",o:["ways","roads","paths"],c:"<b>change your ways</b> — измениться, взяться за ум."},
+ {q:"My grandma ___ school at 14 and started working.",o:["left","leave","has left"],c:"«В 14 лет» — конкретное время в прошлом, поэтому <b>Past Simple: left</b>."},
+ {q:"It has always been my dream to ___ the world.",o:["travel","travelling","travelled"],c:"После <b>to</b> — начальная форма глагола: to <b>travel</b>."}
+]},
+{id:"questions",title:"Вопрос к выделенному слову",rule:["Выделенное слово в ответе — это то, о чём ты спрашиваешь. Человек или страна → <b>Who</b>, время → <b>When</b>, вещь или занятие → <b>What</b>, место → <b>Where</b>.","В вопросе — обратный порядок: <b>are you</b> meeting, <b>is Emma</b> going. С think — <b>do you think</b>. Если выделено <b>No</b> — нужен общий вопрос «да / нет»."],items:[
+ {d:"I think <mark>Brazil</mark> will win the match.",o:["Who do you think will win the match?","Do you think Brazil will win the match?","Who you think will win the match?"],c:"Выделено Brazil — спрашиваем «кто?»: <b>Who do you think</b> will win…? Без do вопрос неверный, а общий вопрос не спрашивает про Brazil."},
+ {d:"I'm seeing my cousin <mark>on Saturday</mark>.",o:["When are you seeing your cousin?","What are you doing on Saturday?","When you are seeing your cousin?"],c:"Выделено время → <b>When</b>. Порядок обратный: When <b>are you</b> seeing…?"},
+ {d:"Emma is going to study <mark>Medicine</mark> at university.",o:["What's Emma going to study at university?","Is Emma going to study Medicine?","What Emma is going to study at university?"],c:"Выделен предмет → <b>What</b>. Emma из ответа остаётся в вопросе, порядок обратный: What<b>'s Emma</b> going to…?"},
+ {d:"<mark>No</mark>, I don't think it will snow tomorrow.",o:["Do you think it will snow tomorrow?","It won't snow tomorrow?","Would it be snow tomorrow?"],c:"Выделено No — нужен общий вопрос. Ответ «I don't think…» подсказывает: <b>Do you think</b> it will…?"},
+ {d:"I'm going to be <mark>a vet</mark> when I grow up.",o:["What are you going to be when you grow up?","Who are you going to be when you grow up?","Are you going to be a vet when you grow up?"],c:"О профессии спрашивают <b>What</b> are you going to be…? Who здесь не подходит."},
+ {t:"build",d:"We're meeting <mark>at the station</mark>.",w:["Where","are","you","meeting","?"],c:"Выделено место → <b>Where</b>, затем обратный порядок: Where <b>are you</b> meeting?"},
+ {t:"build",d:"I think <mark>Max</mark> will be the captain.",w:["Who","do","you","think","will","be","the","captain","?"],c:"Человек → <b>Who</b>, с think — <b>do you think</b>: Who do you think will be the captain?"},
+ {t:"build",d:"Lucy is going to buy <mark>a bike</mark>.",w:["What's","Lucy","going","to","buy","?"],c:"Вещь → <b>What</b>, Lucy остаётся в вопросе: What's Lucy going to buy?"}
+]},
+{id:"perfect",title:"Present Perfect: have + V3 и have been + -ing",rule:["<b>for / since / how long / for the past hour</b>, вопрос «Where have you been?» → действие длится до сейчас: <b>have been + -ing</b>.","<b>just, already, сколько раз</b> → результат: <b>have + V3</b> (I've just heard, you've asked three times).","Конкретное время в прошлом (in 2015, at 14) → <b>Past Simple</b>. Had + V3 здесь не нужен."],items:[
+ {q:"I ___ for the bus for 30 minutes now!",o:["'ve been waiting","'m waiting","was waiting"],c:"«30 минут» и «now» — действие началось раньше и идёт до сих пор: <b>have been + -ing</b>."},
+ {q:"— Where have you been? — I ___ football with my friends.",o:["'ve been playing","'m playing","had played"],c:"На вопрос «Where have you been?» отвечают тем же временем: I<b>'ve been playing</b>."},
+ {q:"What ___ since breakfast? You look tired.",o:["have you been doing","are you doing","did you do"],c:"<b>since</b> + процесс до сейчас → What <b>have you been doing</b>?"},
+ {q:"You ___ me the same question five times already!",o:["'ve asked","'ve been asking","had asked"],c:"Считаем, <b>сколько раз</b>, — это результат: <b>have + V3</b>. Had asked — «раньше другого прошлого», здесь не нужно."},
+ {q:"Guess what! I ___ that our teacher is getting married!",o:["'ve just heard","had heard","hear"],c:"Свежая новость с <b>just</b> → I<b>'ve just heard</b>."},
+ {q:"My uncle ___ university in 2015.",o:["finished","has finished","had finished"],c:"«В 2015» — конкретное время в прошлом → <b>Past Simple</b>: finished."},
+ {q:"We ___ in this flat since I was five.",o:["'ve lived","live","are living"],c:"<b>since</b> → Present Perfect: we<b>'ve lived</b>. Present Simple с since не бывает."},
+ {q:"How long ___ English?",o:["have you been learning","are you learning","do you learn"],c:"<b>How long</b> + процесс до сейчас → <b>have you been learning</b>."}
+]},
+{id:"states",title:"Глаголы-состояния и is + -ing",rule:["<b>love, like, need, know, understand</b> — состояния. Их не ставят в -ing: he <b>needs</b>, I<b>'ve loved</b>, nobody <b>understands</b>.","Действие прямо сейчас — <b>is / are + -ing</b>: she <b>is</b> sleeping. Жалоба на привычку — <b>is always + -ing</b>."],items:[
+ {q:"I ___ this song since I was little.",o:["'ve loved","'ve been loving","was loving"],c:"love — состояние, -ing не нужен. Since → Present Perfect: I<b>'ve loved</b>."},
+ {q:"Nobody ___ the new rules.",o:["understands","understand","is understanding"],c:"Nobody = «он/она» → <b>-s</b>. Understand — состояние, без -ing."},
+ {q:"My sister ___ a new phone.",o:["needs","is needing","have need"],c:"need — состояние: she <b>needs</b>. Have здесь лишнее."},
+ {q:"I ___ what you mean.",o:["know","am knowing","have know"],c:"know — состояние, поэтому просто <b>know</b>."},
+ {q:"It's 10 am and my brother ___.",o:["is still sleeping","still sleeps","have still sleeping"],c:"Действие прямо сейчас → <b>is + -ing</b>. Have с -ing без been не работает."},
+ {q:"Sally ___ the guitar at the moment.",o:["is practising","practising","has practising"],c:"<b>at the moment</b> → is + -ing. Без is предложение неполное."},
+ {q:"My little brother ___ my things without asking!",o:["is always taking","always take","always taking"],c:"Жалоба на раздражающую привычку → <b>is always + -ing</b>."},
+ {q:"You ___ about your phone! Please stop!",o:["are always talking","always talking","is always talking"],c:"Жалоба → <b>are always + -ing</b>. С you — are."}
+]},
+{id:"ing",title:"enjoy doing и feel like doing",rule:["Это задание (упр. 9 в тесте) перепутали 7 человек из 10.","I don't <b>enjoy doing</b> — не люблю (вообще). I don't <b>feel like doing</b> — не хочу (сейчас). После обоих — <b>-ing</b>."],items:[
+ {q:"I'm so tired. I don't feel ___ out tonight.",o:["like going","going","to go"],c:"<b>feel like + -ing</b>: I don't feel like going out — не хочется (сейчас)."},
+ {q:"To be honest, I don't ___ shopping very much.",o:["enjoy","feel like","feel"],c:"«Вообще не очень люблю» → <b>enjoy</b>. Feel like — про желание прямо сейчас."},
+ {q:"She really enjoys ___ in the sea.",o:["swimming","to swim","swim"],c:"После <b>enjoy</b> — всегда <b>-ing</b>: enjoys swimming."},
+ {q:"Do you feel like ___ a film tonight?",o:["watching","to watch","watch"],c:"После <b>feel like</b> — <b>-ing</b>: feel like watching."},
+ {q:"I don't really feel like ___ my homework now.",o:["doing","to do","do"],c:"<b>feel like doing</b> — «нет настроения делать» прямо сейчас."},
+ {q:"The problem is ___ the tickets cost too much.",o:["that","to","like"],c:"<b>The problem is that</b> + целое предложение."}
+]},
+{id:"future",title:"will, going to, Present Continuous",rule:["<b>will</b> — прогноз (I think…, Do you think…?) и решение прямо сейчас.","<b>going to</b> — намерение, решённое заранее. <b>Present Continuous</b> — договорённость (время, билеты)."],items:[
+ {q:"Do you think Spain ___ the match?",o:["will win","is winning","is going to winning"],c:"Прогноз после <b>Do you think</b> → <b>will</b>."},
+ {q:"I'm hungry. I think I ___ a sandwich.",o:["'ll make","'m making","'m going to making"],c:"Решение прямо сейчас («я голоден…») → <b>'ll</b>."},
+ {q:"Tom has bought a guitar. He ___ learn to play it.",o:["is going to","will","is"],c:"Купил гитару — намерение уже есть → <b>is going to</b>."},
+ {q:"We ___ for London at 7 am tomorrow — the tickets are booked.",o:["'re leaving","'ll leave","leave"],c:"Билеты куплены — договорённость → <b>Present Continuous</b>: we're leaving."},
+ {q:"___ that last piece of cake, or can I have it?",o:["Are you going to eat","Will you eat","Do you eat"],c:"Спрашиваем о намерении, которое уже есть → <b>Are you going to eat</b>…?"},
+ {q:"Let's go to the new café. I'm sure it ___ nice.",o:["will be","is being","is going be"],c:"Прогноз (I'm sure) → <b>will be</b>."},
+ {q:"— How ___ to the party? — By bus, we've already planned it.",o:["are you getting","do you get","you are getting"],c:"Уже спланировано → <b>Present Continuous</b>, с обратным порядком: how <b>are you getting</b>…?"},
+ {q:"Look at those black clouds! It ___ rain.",o:["'s going to","will be","is"],c:"Прогноз по тому, что видим прямо сейчас (тучи) → <b>going to</b>."}
+]}
+];
+
+const total=PARTS.reduce((s,p)=>s+p.items.length,0);
+const state={answered:{},correct:{}};
+const $=s=>document.querySelector(s);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function strip(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent}
+function updScore(){const c=Object.values(state.correct).filter(Boolean).length;$('#score').textContent=c+' / '+total}
+
+let voice=null;
+function pickVoice(){if(!('speechSynthesis' in window))return;const v=speechSynthesis.getVoices();voice=v.find(x=>/en-GB/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function say(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace('…',''));u.lang='en-GB';if(voice)u.voice=voice;u.rate=.9;speechSynthesis.speak(u)}
+
+function feedback(box,ok,correct,comment){
+  box.className='fb show '+(ok?'ok':'bad');
+  box.innerHTML='<b class="v">'+(ok?'Верно!':'Неверно. Правильно: '+correct)+'</b>'+comment;
+}
+
+function renderMCQ(it,key,num){
+  const el=document.createElement('div');el.className='item';
+  el.innerHTML=(it.d?'<div class="dlg"><div><span>A</span>___?</div><div><span>B</span>'+it.d+'</div></div><p class="q">Какой вопрос задал A?</p>':'<p class="q"><span class="n">'+num+'.</span>'+it.q+'</p>');
+  const opts=document.createElement('div');opts.className='opts';
+  const fb=document.createElement('div');fb.className='fb';fb.setAttribute('aria-live','polite');
+  shuffle(it.o).forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.type='button';b.innerHTML=o;
+    b.onclick=()=>{
+      if(state.answered[key])return;
+      const ok=o===it.o[0];state.answered[key]=true;state.correct[key]=ok;
+      opts.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.innerHTML===it.o[0])x.classList.add('ok')});
+      if(!ok)b.classList.add('bad');
+      feedback(fb,ok,strip(it.o[0]),it.c);updScore();
+    };
+    opts.appendChild(b);
+  });
+  el.append(opts,fb);return el;
+}
+
+function renderBuild(it,key){
+  const el=document.createElement('div');el.className='item build';
+  el.innerHTML='<div class="dlg"><div><span>A</span>___?</div><div><span>B</span>'+it.d+'</div></div><p class="q">Собери вопрос A из слов:</p>';
+  const slot=document.createElement('div');slot.className='slot';slot.setAttribute('aria-label','Твой вопрос');
+  const pool=document.createElement('div');pool.className='pool';
+  const fb=document.createElement('div');fb.className='fb';fb.setAttribute('aria-live','polite');
+  const row=document.createElement('div');row.className='row';
+  const check=document.createElement('button');check.className='btn';check.type='button';check.textContent='Проверить';
+  const reset=document.createElement('button');reset.className='btn ghost';reset.type='button';reset.textContent='Сбросить';
+  let picked=[];
+  const target=it.w.join(' ').replace(' ?','?');
+  shuffle(it.w.map((w,i)=>({w,i}))).forEach(({w,i})=>{
+    const t=document.createElement('button');t.className='tile';t.type='button';t.textContent=w;
+    t.onclick=()=>{if(state.answered[key])return;picked.push({w,t});t.disabled=true;draw()};
+    pool.appendChild(t);
+  });
+  function draw(){slot.innerHTML='';picked.forEach((p,idx)=>{const s=document.createElement('button');s.className='tile';s.type='button';s.textContent=p.w;
+    s.onclick=()=>{if(state.answered[key])return;p.t.disabled=false;picked.splice(idx,1);draw()};slot.appendChild(s)})}
+  reset.onclick=()=>{if(state.answered[key])return;picked.forEach(p=>p.t.disabled=false);picked=[];draw()};
+  check.onclick=()=>{
+    if(state.answered[key])return;
+    if(picked.length<it.w.length){fb.className='fb show bad';fb.innerHTML='<b class="v">Используй все слова</b>Осталось ещё '+(it.w.length-picked.length)+'.';return}
+    const ans=picked.map(p=>p.w).join(' ').replace(' ?','?');const ok=ans===target;
+    state.answered[key]=true;state.correct[key]=ok;check.disabled=true;reset.disabled=true;
+    feedback(fb,ok,target,it.c);updScore();
+  };
+  row.append(check,reset);el.append(slot,pool,row,fb);return el;
+}
+
+function renderCards(){
+  const sec=document.createElement('section');sec.className='part';sec.id='p-cards';
+  sec.innerHTML='<h2>Карточки: фразы юнита</h2><div class="rule"><p>Нажми на карточку, чтобы перевернуть. Кнопка с динамиком — озвучка, <b>RU</b> — перевод.</p></div>';
+  const grid=document.createElement('div');grid.className='cards';
+  CARDS.forEach(([en,ex,sample,ru])=>{
+    const c=document.createElement('div');c.className='card';
+    c.innerHTML='<div class="in"><div class="face front" role="button" tabindex="0" aria-label="'+en+': перевернуть"><div class="ph">'+en+'</div><button class="icon say" type="button" aria-label="Озвучить">'+SPEAK_ICON+'</button><div class="hint">нажми, чтобы перевернуть</div></div>'+
+    '<div class="face back" role="button" tabindex="0" aria-label="'+en+': перевернуть обратно"><b>'+en+'</b><div>'+ex+'</div><div class="ex">'+sample+'</div><div class="ru">'+ru+'</div><div class="tools"><button class="icon say2" type="button" aria-label="Озвучить пример">'+SPEAK_ICON+'</button><button class="icon rub" type="button" aria-label="Показать перевод">RU</button></div></div></div>';
+    const flip=()=>c.classList.toggle('flip');
+    c.querySelectorAll('.face').forEach(f=>{f.onclick=e=>{if(e.target.closest('button'))return;flip()};f.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('button')){e.preventDefault();flip()}}});
+    c.querySelector('.say').onclick=e=>{e.stopPropagation();say(en)};
+    c.querySelector('.say2').onclick=e=>{e.stopPropagation();say(sample)};
+    c.querySelector('.rub').onclick=e=>{e.stopPropagation();c.querySelector('.ru').classList.toggle('show')};
+    grid.appendChild(c);
+  });
+  sec.appendChild(grid);
+  const nx=document.createElement('div');nx.className='next';nx.innerHTML='<button class="btn" type="button">К упражнениям</button>';nx.querySelector('button').onclick=()=>show('p-'+PARTS[0].id);
+  sec.appendChild(nx);return sec;
+}
+
+function renderPart(p,i){
+  const sec=document.createElement('section');sec.className='part';sec.id='p-'+p.id;
+  sec.innerHTML='<h2>'+p.title+'</h2><div class="rule">'+p.rule.map(r=>'<p>'+r+'</p>').join('')+'</div>';
+  p.items.forEach((it,k)=>{const key=p.id+k;sec.appendChild(it.t==='build'?renderBuild(it,key):renderMCQ(it,key,k+1))});
+  const nx=document.createElement('div');nx.className='next row';
+  const next=PARTS[i+1]?'p-'+PARTS[i+1].id:'p-result';
+  nx.innerHTML='<button class="btn" type="button">'+(PARTS[i+1]?'Дальше: '+PARTS[i+1].title:'Посмотреть итог')+'</button>';
+  nx.querySelector('button').onclick=()=>show(next);
+  sec.appendChild(nx);return sec;
+}
+
+function renderResult(){
+  const sec=document.createElement('section');sec.className='part';sec.id='p-result';
+  sec.innerHTML='<h2>Итог</h2><div class="big" id="bigscore"></div><div class="sum" id="sum"></div><div class="next row"><button class="btn" id="again" type="button">Пройти заново</button></div>';
+  return sec;
+}
+function fillResult(){
+  let c=0;const rows=PARTS.map(p=>{const k=p.items.map((_,i)=>p.id+i);const ok=k.filter(x=>state.correct[x]).length;const done=k.filter(x=>state.answered[x]).length;c+=ok;
+    return '<div class="r"><span>'+p.title+'</span><b>'+ok+' / '+p.items.length+(done<p.items.length?' (не всё отвечено)':'')+'</b></div>'}).join('');
+  $('#bigscore').textContent=c+' / '+total;$('#sum').innerHTML=rows;
+}
+
+const TABS=[['p-cards','Карточки']].concat(PARTS.map(p=>['p-'+p.id,p.title])).concat([['p-result','Итог']]);
+function show(id){
+  document.querySelectorAll('section.part').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-current',b.dataset.t===id?'true':'false'));
+  $('#intro').style.display=id==='p-cards'?'block':'none';
+  if(id==='p-result')fillResult();
+  const tb=document.querySelector('#tabs button[data-t="'+id+'"]');if(tb)tb.scrollIntoView({inline:'center',block:'nearest'});
+  window.scrollTo(0,0);
+}
+function build(){
+  const host=$('#parts');host.innerHTML='';state.answered={};state.correct={};
+  host.appendChild(renderCards());PARTS.forEach((p,i)=>host.appendChild(renderPart(p,i)));host.appendChild(renderResult());
+  $('#again').onclick=()=>{build();show('p-'+PARTS[0].id)};
+  updScore();
+}
+const tabs=$('#tabs');
+TABS.forEach(([id,t])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.dataset.t=id;b.onclick=()=>show(id);tabs.appendChild(b)});
+build();show('p-cards');
+</script>
+</body>
+</html>
