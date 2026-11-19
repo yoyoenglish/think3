@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 · Back in time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly, clear homework tool for teens — encouraging, never childish
+   IDEA: a time-machine route — every section is a station on a timeline from Medieval times to these days
+   PICTURE: the timeline itself, stations light up as sections are finished
+   COLOUR and TYPE: deep indigo night sky, white cards, tomato accent; Unbounded titles + Inter text
+   LAYOUT: hero timeline, then one calm column of station cards, result ticket at the end */
+:root{color-scheme:light dark;
+--bg:light-dark(#f4f5fb,#0e1120);--card:light-dark(#ffffff,#181c30);--ink:light-dark(#141833,#e9ecf7);
+--mute:light-dark(#5b6283,#a5acc8);--line:light-dark(#dfe2ef,#2b3150);--sky:#1f2a6b;--sky2:#2d3a8c;
+--acc:#ff5a36;--ok:light-dark(#0f7b55,#3fd39b);--okbg:light-dark(#e3f6ee,#123a2c);--bad:light-dark(#c8281c,#ff7b6e);--badbg:light-dark(#fde8e6,#3d1a18)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2{font-family:Unbounded,Inter,sans-serif;line-height:1.08;text-wrap:balance;margin:0}
+.hero{background:radial-gradient(120% 140% at 80% 0%,var(--sky2),var(--sky) 60%);color:#fff;padding:clamp(28px,5vw,56px) max(5vw,16px) 26px}
+.hero h1{font-size:clamp(30px,5.4vw,50px)}
+.hero p{max-width:640px;margin:10px 0 0;color:#d7dcff}
+.route{margin-top:26px;position:relative}
+.route svg{width:100%;height:120px;display:block}
+.stations{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:-6px}
+.stations a{color:#cfd5ff;text-decoration:none;font-size:13px;text-align:center;line-height:1.25;padding:4px 2px;border-radius:8px}
+.stations a.done{color:#fff;font-weight:600}
+.stations a:focus-visible{outline:2px solid var(--acc)}
+.bar{display:flex;align-items:center;gap:12px;margin-top:18px;font-weight:600}
+.meter{flex:1;height:10px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--acc);transition:width .4s}
+main{max-width:860px;margin:0 auto;padding:24px max(4vw,14px) 60px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,28px);margin:18px 0;scroll-margin-top:16px}
+.sec header{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.num{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--sky);color:#fff;font:700 18px Unbounded,sans-serif}
+.sec.done .num{background:var(--ok)}
+.sec h2{font-size:clamp(20px,3vw,26px)}
+.how{color:var(--mute);margin:4px 0 0;font-size:15px}
+.score{margin-left:auto;font-weight:700;white-space:nowrap;color:var(--mute)}
+.item{border-top:1px solid var(--line);padding:14px 0}
+.q{margin:0 0 10px;font-size:17px}
+.q b.gap{display:inline-block;min-width:70px;border-bottom:2px solid var(--acc);text-align:center;color:var(--acc)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;cursor:pointer}
+.opt{min-height:44px;padding:8px 16px;border-radius:12px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-weight:500}
+.opt:hover:not(:disabled){border-color:var(--sky2)}
+.opt:focus-visible,select:focus-visible,.tok:focus-visible,textarea:focus-visible,input:focus-visible,.btn:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.opt.right{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.why{margin:10px 0 0;padding:9px 12px;border-radius:10px;font-size:15px;display:none}
+.why.show{display:block}.why.ok{background:var(--okbg)}.why.no{background:var(--badbg)}
+.story{font-size:17px;line-height:2.3}
+select{font:inherit;font-size:16px;min-height:40px;padding:4px 8px;border-radius:10px;border:1.5px solid var(--acc);background:var(--card);color:var(--ink);max-width:100%}
+select.right{border-color:var(--ok);background:var(--okbg)}select.wrong{border-color:var(--bad);background:var(--badbg)}
+.btn{min-height:46px;padding:10px 20px;border-radius:12px;border:0;background:var(--sky);color:#fff;font-weight:700;margin-top:12px}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.toks{display:flex;flex-wrap:wrap;gap:6px;font-size:17px}
+.tok{min-height:42px;padding:6px 10px;border-radius:10px;border:1.5px dashed var(--line);background:transparent;color:var(--ink)}
+.tok.right{border:1.5px solid var(--ok);background:var(--okbg);color:var(--ok);font-weight:700}
+.tok.wrong{border:1.5px solid var(--bad);background:var(--badbg);color:var(--bad)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.checks{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:14px}
+.checks span{padding:4px 10px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--mute)}
+.checks span.on{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:600}
+.ticket{background:var(--sky);color:#fff;border-radius:18px;padding:clamp(20px,3vw,30px);margin-top:24px}
+.ticket h2{font-size:clamp(22px,3.4vw,30px)}
+.big{font:700 clamp(40px,8vw,64px)/1 Unbounded,sans-serif;margin:14px 0 6px}
+.rows{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;max-width:460px;margin:12px 0;color:#d7dcff}
+.ticket input{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3);color:#fff}
+.ticket .btn{background:var(--acc)}.ticket .btn.alt{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.note{font-size:14px;color:#cfd5ff;margin-top:10px}
+@media (max-width:600px){.stations a{font-size:11px}.score{display:none}.story{line-height:2.5}}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <h1>Unit 2 · Back in time</h1>
+  <p>Тренажёр по лексике и грамматике Think 3, Unit 2: слова о прошлом, выражения времени, Past Simple / Continuous / Perfect / Perfect Continuous, used to и would. Отвечай сразу — после каждого ответа увидишь подсказку.</p>
+  <div class="route">
+    <svg id="route" viewBox="0 0 700 120" aria-hidden="true"></svg>
+    <nav class="stations" id="stations"></nav>
+  </div>
+  <div class="bar"><span id="cnt">0 / 43</span><div class="meter"><i id="meter"></i></div><span id="pct">0%</span></div>
+</section>
+<main id="main"></main>
+<main style="padding-top:0">
+  <section class="ticket" id="result">
+    <h2>Твой билет из прошлого</h2>
+    <div class="big" id="bigScore">0 / 43</div>
+    <div id="verdict">Выполни задания — здесь появится результат.</div>
+    <div class="rows" id="rows"></div>
+    <label for="name" style="display:block;margin:14px 0 6px;font-weight:600">Имя и фамилия</label>
+    <input type="text" id="name" autocomplete="name" placeholder="Например: Ника">
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <button class="btn" id="copy">Скопировать результат для учителя</button>
+      <button class="btn alt" id="reset">Начать заново</button>
+    </div>
+    <div class="note" id="copyNote">Нажми «Скопировать» и вставь текст в чат с учителем, или пришли скриншот этого блока.</div>
+  </section>
+</main>
+<script>
+{
+const D = [
+ {id:'w', t:'Слова в действии', s:'Слова', how:'Прочитай ситуацию и выбери слово, которое её описывает.', type:'choice', items:[
+  ['The new rules really <b class="gap">___</b> the fans — they shouted and booed for ten minutes.',['enraged','grabbed','demolished'],0,'enrage — сильно разозлить кого-то.'],
+  ['The town <b class="gap">___</b> the old factory and built a park in its place.',['struck','demolished','begged'],1,'demolish — полностью снести, разрушить здание.'],
+  ['A boy on a bike <b class="gap">___</b> her bag and rode away.',['grabbed','beat','bore'],0,'grab — быстро схватить.'],
+  ['During the storm, lightning <b class="gap">___</b> the tallest tree in the park.',['herded','enraged','struck'],2,'strike (struck, struck) — ударить; о молнии — попасть.'],
+  ['The puppy sat by the table and <b class="gap">___</b> for a piece of sausage.',['grabbed','begged','lasted'],1,'beg for something — выпрашивать, очень просить.'],
+  ['There were no trains, so we stayed at the station <b class="gap">___</b>.',['overnight','on the move','last'],0,'overnight — на ночь, всю ночь.'],
+  ['A <b class="gap">___</b> of cows was walking slowly across the road.',['crowd','herd','team'],1,'herd — стадо (коров, оленей и т. п.).'],
+  ['The noise was terrible — I couldn’t <b class="gap">___</b> it any longer.',['bear','beg','grab'],0,'can’t bear something — не могу вынести, терпеть.'],
+  ['This battery doesn’t <b class="gap">___</b> long — only three hours.',['move','last','strike'],1,'last — длиться, продолжаться, хватать (о времени).'],
+  ['Nomads don’t stay in one place. They are always on the <b class="gap">___</b>.',['road','move','herd'],1,'be on the move — быть в пути, всё время перемещаться.']]},
+ {id:'t', t:'Машина времени', s:'Время', how:'Какое выражение подходит по смыслу?', type:'choice', items:[
+  ['<b class="gap">___</b>, knights fought with swords and lived in castles.',['These days','In Medieval times','Not so long ago'],1,'In Medieval times — в Средние века.'],
+  ['Planes, TV and computers were all invented <b class="gap">___</b>.',['in the last century','these days','in Medieval times'],0,'in the last century — в прошлом веке (XX век).'],
+  ['<b class="gap">___</b>, almost every teenager has a smartphone.',['In Medieval times','These days','In the last century'],1,'These days — в наши дни, сейчас.'],
+  ['It’s strange that <b class="gap">___</b> some people still write letters by hand!',['in this day and age','not so long ago','in Medieval times'],0,'in this day and age — в наше время (часто с удивлением: «и это в наше-то время!»).'],
+  ['<b class="gap">___</b> — just a few years ago — I couldn’t swim at all.',['In the last century','Not so long ago','In Medieval times'],1,'Not so long ago — не так давно.']]},
+ {id:'m', t:'Что было раньше?', s:'Что раньше?', how:'Время глагола меняет смысл. Прочитай предложение и ответь на вопрос.', type:'choice', items:[
+  ['<i>When Tom arrived at the party, Kate <b>had left</b>.</i><br>Did Tom see Kate at the party?',['Yes','No'],1,'had left — Кейт ушла РАНЬШЕ, чем пришёл Том. Он её не видел.'],
+  ['<i>When Tom arrived at the party, Kate <b>left</b>.</i><br>Did Tom see Kate at the party?',['Yes','No'],0,'Past Simple + Past Simple — действия идут одно за другим: Том пришёл, и ПОТОМ Кейт ушла.'],
+  ['<i>When I got to the cinema, the film <b>had started</b>.</i><br>Did I see the beginning of the film?',['Yes','No'],1,'had started — фильм начался ДО того, как я пришёл.'],
+  ['<i>When I got to the cinema, the film <b>started</b>.</i><br>Did I see the beginning of the film?',['Yes','No'],0,'Я пришёл, и сразу после этого фильм начался — начало я видел.'],
+  ['<i>Her eyes were red because she <b>had been crying</b>.</i><br>What does it mean?',['Она плакала какое-то время ДО этого — видны последствия','Она заплакала ПОСЛЕ этого'],0,'had been + -ing — действие длилось до момента в прошлом, и мы видим его результат.'],
+  ['<i>I <b>was reading</b> when the lights <b>went out</b>.</i><br>What happened first?',['Я уже читал, и тут погас свет','Погас свет, и я начал читать'],0,'Past Continuous — длительное действие (фон), Past Simple — короткое событие, которое его прервало.']]},
+ {id:'s', t:'История в прошедшем', s:'История', how:'Выбери нужную форму в каждом пропуске, потом нажми «Проверить историю».', type:'story',
+  text:'Last Saturday I {0} up really late because I {1} videos until three in the morning. I {2} for my phone, but it wasn’t on my desk! I {3} under the bed when my little sister {4} into the room with a big smile. She {5} my phone under my pillow as a joke. Luckily, she {6} my messages. While we {7}, Mum called us for breakfast.',
+  gaps:[
+   [['woke','was waking','had woken','had been waking'],[0],'Последовательность событий в рассказе — Past Simple.'],
+   [['watched','was watching','had watched','had been watching'],[3,2],'Смотрел ДО того, как проснулся, и долго — had been watching (had watched тоже возможно).'],
+   [['reached','was reaching','had reached','had been reaching'],[0],'Короткое действие в цепочке событий — Past Simple.'],
+   [['looked','was looking','had looked','had been looking'],[1],'Действие было в процессе, когда вошла сестра, — Past Continuous.'],
+   [['walked','was walking','had walked','had been walking'],[0],'Короткое событие, прервавшее поиски, — Past Simple.'],
+   [['hid','was hiding','had hidden','had been hiding'],[2],'Спрятала РАНЬШЕ всех этих событий — Past Perfect.'],
+   [['didn’t read','wasn’t reading','hadn’t read','hadn’t been reading'],[2],'Не прочитала до того момента — Past Perfect (отрицание: hadn’t + V3).'],
+   [['laughed','were laughing','had laughed','had been laughing'],[1],'While + действие в процессе — Past Continuous.']]},
+ {id:'u', t:'used to, would — или оба?', s:'used to / would', how:'Выбери, что подходит. Если подходят и used to, и would, выбери «оба».', type:'choice', items:[
+  ['I <b class="gap">___</b> have very long hair when I was little.',['used to','would','оба'],0,'have — состояние. Для состояний только used to, would нельзя.'],
+  ['Every summer we <b class="gap">___</b> go to the seaside with our grandparents.',['used to','would','оба'],2,'Повторяющееся действие в прошлом — подходят и used to, и would.'],
+  ['Did you <b class="gap">___</b> believe in Father Frost?',['used to','use to','would'],1,'После did / didn’t — use to (без -d).'],
+  ['There <b class="gap">___</b> be a cinema here, but they demolished it.',['used to','would','оба'],0,'be — состояние. Только used to.'],
+  ['When I was five, my grandma <b class="gap">___</b> read me a story every night.',['used to','would','оба'],2,'Повторяющееся действие (каждый вечер) — оба варианта.'],
+  ['We didn’t <b class="gap">___</b> have a dog.',['used to','use to','would'],1,'didn’t + use to.'],
+  ['My dad <b class="gap">___</b> know all the players in his favourite team.',['used to','would','оба'],0,'know — состояние. Только used to.'],
+  ['After school, my friends and I <b class="gap">___</b> play football in the yard for hours.',['used to','would','оба'],2,'Привычное повторяющееся действие — оба варианта.']]},
+ {id:'d', t:'Детектив ошибок', s:'Детектив', how:'В каждом предложении одна ошибка. Нажми на неправильное слово.', type:'detective', items:[
+  ['When I got home, my parents have already eaten dinner.',6,'have → <b>had</b>: в рассказе о прошлом «уже поели до этого» — had eaten.'],
+  ['Did you used to play computer games?',2,'used → <b>use</b>: после did — use to.'],
+  ['I would have a cat when I was a child.',1,'would → <b>used to</b>: have — состояние, would с ним не используется.'],
+  ['She was tired because she had been work all day.',7,'work → <b>working</b>: had been + -ing.'],
+  ['By the time the firefighters arrived, the fire destroyed the house.',8,'destroyed → <b>had destroyed</b>: дом сгорел ДО приезда пожарных.'],
+  ['My little brother use to cry a lot when he was a baby.',3,'use → <b>used</b>: в утверждении — used to.']]}
+];
+const TOTAL = D.reduce((n,s)=>n+(s.type==='story'?s.gaps.length:s.items.length),0);
+const KEY='think3u2_trainer_v1';
+let st={}; try{st=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){st={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const $=s=>document.querySelector(s), main=$('#main');
+
+main.innerHTML = D.map((s,si)=>{
+ let body='';
+ if(s.type==='choice') body=s.items.map((it,i)=>`<div class="item" data-k="${s.id}${i}"><p class="q">${it[0]}</p><div class="opts">${it[1].map((o,j)=>`<button class="opt" data-k="${s.id}${i}" data-v="${j}">${o}</button>`).join('')}</div><p class="why"></p></div>`).join('');
+ if(s.type==='story') body=`<div class="item"><p class="story">${s.text.replace(/\{(\d)\}/g,(m,g)=>`<select data-g="${g}" aria-label="Пропуск ${+g+1}"><option value="">${+g+1} …</option>${s.gaps[g][0].map((o,j)=>`<option value="${j}">${o}</option>`).join('')}</select>`)}</p><button class="btn" id="checkStory" disabled>Проверить историю</button><div id="storyWhy"></div></div>`;
+ if(s.type==='detective') body=s.items.map((it,i)=>`<div class="item"><div class="toks">${it[0].split(' ').map((w,j)=>`<button class="tok" data-k="${s.id}${i}" data-v="${j}">${w}</button>`).join('')}</div><p class="why"></p></div>`).join('');
+ return `<section class="sec" id="${s.id}"><header><div class="num">${si+1}</div><div><h2>${s.t}</h2><p class="how">${s.how}</p></div><div class="score" id="sc-${s.id}"></div></header>${body}</section>`;
+}).join('') + `<section class="sec" id="o"><header><div class="num">7</div><div><h2>Твоя машина времени</h2><p class="how">Напиши о себе 3 предложения. Без оценки — проверь себя по подсказкам, текст попадёт в результат для учителя.</p></div></header>
+ ${[['o1','Что ты обычно делал(а) летом, когда тебе было 7? Используй <b>used to</b> или <b>would</b>.'],['o2','Чего у тебя раньше НЕ было или что ты НЕ любил(а)? Используй <b>didn’t use to</b>.'],['o3','Расскажи короткую историю: что случилось и что произошло ДО этого. Используй <b>had + V3</b>.']].map(([k,q])=>`<div class="item"><p class="q">${q}</p><textarea id="${k}" aria-label="${q.replace(/<[^>]+>/g,'')}"></textarea><div class="checks" id="c-${k}"></div></div>`).join('')}</section>`;
+
+/* stations */
+const ST=[...D.map(s=>[s.id,s.s]),['o','О себе']];
+$('#stations').innerHTML=ST.map(([id,n])=>`<a href="#${id}" id="lk-${id}">${n}</a>`).join('');
+
+function sectionStats(s){
+ if(s.type==='story'){const k=st['s']; if(!k) return [0,0,s.gaps.length]; return [k.filter((v,g)=>s.gaps[g][1].includes(v)).length,s.gaps.length,s.gaps.length];}
+ let ok=0,done=0; s.items.forEach((it,i)=>{const v=st[s.id+i]; if(v!==undefined){done++; if(v===(s.type==='choice'?it[2]:it[1])) ok++;}}); return [ok,done,s.items.length];
+}
+function drawRoute(){
+ const svg=$('#route'), n=ST.length, W=svg.clientWidth||700; svg.setAttribute('viewBox',`0 0 ${W} 120`); const xs=ST.map((_,i)=>W*(i+.5)/n);
+ const fin=ST.map(([id])=>{if(id==='o') return ['o1','o2','o3'].every(k=>(st[k]||'').trim().length>10); const s=D.find(d=>d.id===id), r=sectionStats(s); return r[1]===r[2];});
+ let h=`<path d="${xs.map((x,i)=>(i?'L':'M')+x+' '+(70-Math.sin(i/(n-1)*Math.PI*2)*22)).join(' ')}" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>`;
+ xs.forEach((x,i)=>{const y=70-Math.sin(i/(n-1)*Math.PI*2)*22;
+  h+=`<ellipse cx="${x}" cy="${y+16}" rx="16" ry="4" fill="rgba(0,0,0,.25)"/><circle cx="${x}" cy="${y}" r="15" fill="${fin[i]?'#ff5a36':'#2d3a8c'}" stroke="#fff" stroke-width="3"/><circle cx="${x-4}" cy="${y-5}" r="4" fill="rgba(255,255,255,.45)"/>`;
+  h+=fin[i]?`<path d="M${x-6} ${y} l4 5 l8 -10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`:`<text x="${x}" y="${y+5}" fill="#fff" font-size="14" font-weight="700" text-anchor="middle" font-family="Inter">${i+1}</text>`;
+  $('#lk-'+ST[i][0]).classList.toggle('done',fin[i]);});
+ svg.innerHTML=h;
+}
+function refresh(){
+ let ok=0,done=0;
+ D.forEach(s=>{const [a,b,c]=sectionStats(s); ok+=a; done+=b; $('#sc-'+s.id).textContent=b?`${a} / ${c}`:`0 / ${c}`; $('#'+s.id).classList.toggle('done',b===c);});
+ $('#cnt').textContent=`${ok} / ${TOTAL}`; $('#meter').style.width=(done/TOTAL*100)+'%'; $('#pct').textContent=Math.round(done/TOTAL*100)+'%';
+ $('#bigScore').textContent=`${ok} / ${TOTAL}`;
+ const p=ok/TOTAL;
+ $('#verdict').textContent= done<TOTAL ? `Сделано ${done} из ${TOTAL} заданий.` : p>=.9?'Отлично! Ты готов(а) к следующему юниту.':p>=.75?'Хорошо! Посмотри подсказки к ошибкам ещё раз.':'Повтори правила в подсказках и пройди тренажёр ещё раз.';
+ $('#rows').innerHTML=D.map(s=>{const [a,,c]=sectionStats(s);return `<span>${s.t}</span><b>${a} / ${c}</b>`}).join('');
+ drawRoute();
+}
+function apply(k,v,silent){
+ const s=D.find(d=>k.startsWith(d.id)&&d.type!=='story'), i=+k.slice(s.id.length), it=s.items[i];
+ const right = s.type==='choice'?it[2]:it[1];
+ document.querySelectorAll(`[data-k="${k}"]`).forEach(b=>{b.disabled=true; const j=+b.dataset.v; if(j===right) b.classList.add('right'); else if(j===v) b.classList.add('wrong');});
+ const why=document.querySelector(`[data-k="${k}"]`).closest('.item').querySelector('.why');
+ why.innerHTML=(v===right?'✓ Верно. ':'✗ Не совсем. ')+(s.type==='choice'?it[3]:it[2]); why.className='why show '+(v===right?'ok':'no');
+ if(!silent){st[k]=v; save(); refresh();}
+}
+main.addEventListener('click',e=>{const b=e.target.closest('.opt,.tok'); if(!b||b.disabled) return; apply(b.dataset.k,+b.dataset.v);});
+
+/* story */
+const sels=[...document.querySelectorAll('select[data-g]')], sDef=D.find(d=>d.id==='s');
+const chk=$('#checkStory');
+sels.forEach(x=>x.addEventListener('change',()=>{chk.disabled=sels.some(y=>y.value==='');}));
+function showStory(vals){
+ sels.forEach((x,g)=>{x.value=vals[g]; x.disabled=true; x.classList.add(sDef.gaps[g][1].includes(vals[g])?'right':'wrong');});
+ $('#storyWhy').innerHTML=sDef.gaps.map((gp,g)=>{const ok=gp[1].includes(vals[g]);return `<p class="why show ${ok?'ok':'no'}">${g+1}. ${ok?'✓':'✗ Правильно: <b>'+gp[0][gp[1][0]]+'</b>.'} ${gp[2]}</p>`}).join('');
+ chk.disabled=true;
+}
+chk.addEventListener('click',()=>{const v=sels.map(x=>+x.value); st['s']=v; save(); showStory(v); refresh();});
+
+/* open writing */
+const rules={o1:[['used to / would',/\b(used to|would)\b/i],['3+ слова',/\S+\s+\S+\s+\S+/]],o2:[["didn't use to",/\bdid(n['’]?t| not) use to\b/i],['без «used» после didn’t',t=>!/\bdid(n['’]?t| not) used\b/i.test(t)]],o3:[['had + V3',/\bhad (\w+ed|been|gone|done|seen|eaten|left|lost|taken|forgotten|broken|written|made|got|found|told|said|come|run|bought|stolen|hidden|known|given|heard|met|read|become|begun|fallen|flown|thought|won)\b/i],['Past Simple тоже есть',/\b(was|were|\w+ed|went|came|saw|got|found|took|made|said|told|ran|left|lost|bought)\b/i]]};
+['o1','o2','o3'].forEach(k=>{const ta=$('#'+k); ta.value=st[k]||'';
+ const upd=()=>{const t=ta.value; $('#c-'+k).innerHTML=rules[k].map(([n,r])=>`<span class="${t.trim()&&(typeof r==='function'?r(t):r.test(t))?'on':''}">${n}</span>`).join('');};
+ ta.addEventListener('input',()=>{st[k]=ta.value; save(); upd(); drawRoute();}); upd();});
+
+/* name, copy, reset */
+const nm=$('#name'); nm.value=st.name||''; nm.addEventListener('input',()=>{st.name=nm.value; save();});
+$('#copy').addEventListener('click',async()=>{
+ const lines=[`Think 3 Unit 2 — тренажёр`,`Имя: ${nm.value||'—'}`,`Итог: ${$('#bigScore').textContent}`,...D.map(s=>{const [a,b,c]=sectionStats(s);return `${s.t}: ${a}/${c}${b<c?' (не закончено)':''}`}),'— О себе —',...['o1','o2','o3'].map((k,i)=>`${i+1}) ${(st[k]||'').trim()||'—'}`)].join('\n');
+ try{await navigator.clipboard.writeText(lines); $('#copyNote').textContent='Скопировано! Вставь текст в чат с учителем.';}
+ catch(e){$('#copyNote').textContent='Не получилось скопировать автоматически — сделай скриншот этого блока и пришли учителю.';}
+});
+$('#reset').addEventListener('click',()=>{
+ if($('#reset').dataset.sure!=='1'){$('#reset').dataset.sure='1'; $('#reset').textContent='Точно стереть ответы? Нажми ещё раз'; return;}
+ const n=st.name; st={name:n}; save(); location.reload();
+});
+
+/* restore */
+Object.keys(st).forEach(k=>{if(/^[wtmud]\d+$/.test(k)) apply(k,st[k],true);});
+if(Array.isArray(st['s'])) showStory(st['s']);
+refresh();
+const ro=new ResizeObserver(drawRoute); ro.observe($('#route'));
+}
+</script>
+</body>
+</html>
