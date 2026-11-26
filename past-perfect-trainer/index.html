@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Past Perfect vs Past Perfect Continuous · B1+</title>
+<style>
+  :root{
+    --ink:#1f2430; --muted:#6b7280; --line:#e5e7eb; --bg:#f7f8fa; --card:#fff;
+    --simple:#2563eb; --simple-bg:#eff4ff;
+    --cont:#c2410c; --cont-bg:#fff4ec;
+    --ok:#15803d; --ok-bg:#ecfdf3; --bad:#b91c1c; --bad-bg:#fef2f2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  .wrap{max-width:820px;margin:0 auto;padding:20px 16px 60px}
+  header{text-align:center;padding:18px 0 8px}
+  header h1{margin:0;font-size:26px}
+  header p{margin:6px 0 0;color:var(--muted)}
+  .score{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;margin:14px 0;display:flex;justify-content:space-between;align-items:center;font-weight:600}
+  .score button{background:#fff;color:var(--ink);border:0;border-radius:8px;padding:6px 12px;font-weight:600;cursor:pointer}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:18px 0}
+  h2{margin:0 0 4px;font-size:20px}
+  .task{color:var(--muted);margin:0 0 14px}
+  .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.rule-grid{grid-template-columns:1fr}}
+  .rule{border-radius:12px;padding:14px}
+  .rule.s{background:var(--simple-bg);border-left:5px solid var(--simple)}
+  .rule.c{background:var(--cont-bg);border-left:5px solid var(--cont)}
+  .rule h3{margin:0 0 6px;font-size:17px}
+  .rule .form{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;margin:4px 0 8px}
+  .rule ul{margin:6px 0 0;padding-left:18px}
+  .rule li{margin:3px 0}
+  .ex{font-style:italic}
+  .ru{color:var(--muted);font-size:14px}
+  .tip{margin-top:12px;background:#fafafa;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+  .timeline{width:100%;margin-top:12px}
+  .q{border-top:1px solid var(--line);padding:12px 0}
+  .q:first-of-type{border-top:0}
+  .q .n{font-weight:700;color:var(--muted);margin-right:6px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .opt{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font-size:15px;cursor:pointer;color:var(--ink);text-align:left}
+  .opt:hover:not(:disabled){border-color:#9ca3af}
+  .opt:disabled{cursor:default}
+  .opt.right{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .gap{display:inline-block;min-width:70px;border-bottom:2px solid #9ca3af;text-align:center;font-weight:600;padding:0 4px}
+  .typerow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .typerow input{flex:1;min-width:180px;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px}
+  .typerow input.right{border-color:var(--ok);background:var(--ok-bg)}
+  .typerow input.wrong{border-color:var(--bad);background:var(--bad-bg)}
+  .btn{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:8px 14px;font-size:15px;cursor:pointer}
+  .btn:disabled{opacity:.4;cursor:default}
+  .fb{display:none;margin-top:8px;border-radius:10px;padding:8px 12px;font-size:15px}
+  .fb.show{display:block}
+  .fb.ok{background:var(--ok-bg);color:#14532d}
+  .fb.no{background:var(--bad-bg);color:#7f1d1d}
+  .fb b{display:block}
+  .final{text-align:center;font-size:18px;display:none}
+  .final.show{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Past Perfect vs Past Perfect Continuous</h1>
+    <p>Тренажёр · уровень B1+</p>
+  </header>
+
+  <div class="score">
+    <span>Баллы: <span id="pts">0</span> / <span id="total">0</span></span>
+    <button id="reset" type="button">Начать заново</button>
+  </div>
+
+  <!-- RULE -->
+  <section>
+    <h2>Rule</h2>
+    <p class="task">Оба времени описывают действие <b>до</b> другого момента в прошлом («прошлое в прошлом»). Разница — в фокусе.</p>
+    <div class="rule-grid">
+      <div class="rule s">
+        <h3>Past Perfect Simple</h3>
+        <div class="form">had + V3 (past participle)</div>
+        <ul>
+          <li><b>Result / completed action</b> — действие завершилось, важен результат.<br><span class="ex">When we arrived, the film had started.</span></li>
+          <li><b>How many / how much</b> — с количеством.<br><span class="ex">She had written three emails.</span></li>
+          <li><b>State verbs</b> (know, be, have, like, own, believe…) — только Simple.<br><span class="ex">I had known him for years.</span></li>
+        </ul>
+      </div>
+      <div class="rule c">
+        <h3>Past Perfect Continuous</h3>
+        <div class="form">had been + V-ing</div>
+        <ul>
+          <li><b>Duration / process</b> — важно, как долго длилось.<br><span class="ex">They had been waiting for an hour.</span></li>
+          <li><b>Visible evidence</b> — объясняет то, что видно в прошлом.<br><span class="ex">The road was wet. It had been raining.</span></li>
+          <li>Часто с <b>for, since, all day, how long</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <svg class="timeline" viewBox="0 0 760 120" role="img" aria-label="Timeline">
+      <line x1="20" y1="70" x2="740" y2="70" stroke="#9ca3af" stroke-width="2"/>
+      <polygon points="740,64 752,70 740,76" fill="#9ca3af"/>
+      <text x="745" y="98" font-size="14" fill="#6b7280" text-anchor="end">NOW</text>
+      <line x1="520" y1="40" x2="520" y2="90" stroke="#1f2430" stroke-width="2"/>
+      <text x="520" y="110" font-size="14" fill="#1f2430" text-anchor="middle" font-weight="700">past moment (arrived)</text>
+      <circle cx="300" cy="70" r="8" fill="#2563eb"/>
+      <text x="300" y="45" font-size="14" fill="#2563eb" text-anchor="middle" font-weight="700">had started ✔ (result)</text>
+      <rect x="120" y="58" width="395" height="8" rx="4" fill="#c2410c" opacity=".85"/>
+      <text x="200" y="100" font-size="14" fill="#c2410c" text-anchor="middle" font-weight="700">had been waiting ⟶ (duration)</text>
+    </svg>
+    <div class="tip">💡 Проверка: <b>«Сколько штук / что готово?»</b> → Simple. <b>«Как долго / чем занимался?»</b> → Continuous. Глагол состояния → всегда Simple.</div>
+  </section>
+
+  <!-- EX 1 -->
+  <section>
+    <h2>1. Choose the correct form</h2>
+    <p class="task">Выбери правильный вариант.</p>
+    <div id="ex1"></div>
+  </section>
+
+  <!-- EX 2 -->
+  <section>
+    <h2>2. Put the verb in the correct form</h2>
+    <p class="task">Напиши глагол в Past Perfect или Past Perfect Continuous. Краткие формы (hadn't) принимаются. Нажми Enter или «Check».</p>
+    <div id="ex2"></div>
+  </section>
+
+  <!-- EX 3 -->
+  <section>
+    <h2>3. Right or wrong?</h2>
+    <p class="task">Предложение правильное или в нём ошибка?</p>
+    <div id="ex3"></div>
+  </section>
+
+  <!-- EX 4 -->
+  <section>
+    <h2>4. Meaning check</h2>
+    <p class="task">Ответь на вопрос о смысле.</p>
+    <div id="ex4"></div>
+  </section>
+
+  <section class="final" id="final"></section>
+</div>
+
+<script>
+const EX1 = [
+  {q:"When I got home, my clothes were dirty because I ___ in the garden all afternoon.", o:["had been working","had worked"], a:0,
+   c:"«all afternoon» — длительность, а грязная одежда — видимый след процесса. Поэтому Continuous."},
+  {q:"By the time the teacher came back, we ___ the whole test.", o:["had been finishing","had finished"], a:1,
+   c:"Тест полностью сделан — важен результат («by the time» + завершённость). Поэтому Simple."},
+  {q:"She was out of breath because she ___.", o:["had been running","had run"], a:0,
+   c:"Одышка — видимое следствие длительного действия. Поэтому Continuous."},
+  {q:"Tom ___ three chapters before he fell asleep.", o:["had been reading","had read"], a:1,
+   c:"Есть количество — «three chapters». Когда считаем, сколько сделано, нужен Simple."},
+  {q:"I ___ Kate for ten years when she moved to Canada.", o:["had known","had been knowing"], a:0,
+   c:"know — глагол состояния, в Continuous не употребляется, даже с «for ten years»."},
+  {q:"The ground was wet. It ___ all night.", o:["had rained","had been raining"], a:1,
+   c:"Мокрая земля — видимое доказательство + «all night» (длительность). Continuous."},
+  {q:"When we got to the cinema, the film ___.", o:["had already started","had already been starting"], a:0,
+   c:"Фильм начался — это однократное завершённое событие до нашего прихода. Simple."},
+  {q:"They ___ for the bus for 40 minutes when it finally came.", o:["had waited","had been waiting"], a:1,
+   c:"Акцент на том, как долго ждали до момента в прошлом («for 40 minutes when…»). Continuous."},
+  {q:"He couldn't pay because he ___ his wallet at home.", o:["had left","had been leaving"], a:0,
+   c:"Оставить кошелёк — короткое завершённое действие, важен результат (кошелька нет). Simple."},
+  {q:"How long ___ English before you moved to London?", o:["had you learned","had you been learning"], a:1,
+   c:"«How long» спрашивает о продолжительности процесса — типичный случай для Continuous."},
+  {q:"I didn't want any cake because I ___ two pieces already.", o:["had eaten","had been eating"], a:0,
+   c:"«two pieces» — количество и результат (уже сыт). Simple."},
+  {q:"Her eyes were red. She ___.", o:["had cried","had been crying"], a:1,
+   c:"Красные глаза — видимый след длительного действия. Continuous."}
+];
+
+const EX2 = [
+  {pre:"Max was tired because he", verb:"play", post:"football for three hours.", a:["had been playing"],
+   c:"«for three hours» + усталость = длительность и её след → had been playing."},
+  {pre:"When I arrived at the party, Anna", verb:"already / go", post:"home.", a:["had already gone"],
+   c:"Анна ушла раньше моего прихода, действие завершено → had already gone. already ставим между had и V3."},
+  {pre:"We", verb:"not / see", post:"the sea before that holiday.", a:["hadn't seen","had not seen"],
+   c:"Опыт до момента в прошлом (не видели ни разу) → hadn't seen. Здесь нет процесса, только факт."},
+  {pre:"The kitchen smelled great. Mum", verb:"bake", post:"cookies.", a:["had been baking"],
+   c:"Запах — видимое (точнее, ощутимое) доказательство процесса → had been baking."},
+  {pre:"By 10 o'clock, I", verb:"write", post:"five emails.", a:["had written"],
+   c:"«five emails» — количество, результат к моменту «by 10 o'clock» → had written."},
+  {pre:"They", verb:"argue", post:"for an hour when their dad came in.", a:["had been arguing"],
+   c:"«for an hour when…» — длительность до момента в прошлом → had been arguing."},
+  {pre:"I", verb:"never / be", post:"to Spain before 2020.", a:["had never been"],
+   c:"be — глагол состояния + опыт «never» → только Simple: had never been."},
+  {pre:"Her hands were covered in paint. She", verb:"paint", post:"the fence.", a:["had been painting"],
+   c:"Руки в краске — след процесса; не важно, докрасила ли она → had been painting."},
+  {pre:"He didn't recognise me because I", verb:"change", post:"a lot.", a:["had changed"],
+   c:"Важен результат (я стал другим) → had changed."},
+  {pre:"The students were bored. The teacher", verb:"talk", post:"for too long.", a:["had been talking"],
+   c:"«for too long» — акцент на длительности, скука — её следствие → had been talking."}
+];
+
+const EX3 = [
+  {s:"I had been knowing him for years.", ok:false, fix:"I had known him for years.",
+   c:"know — глагол состояния, Continuous с ним не используется."},
+  {s:"She had been studying all evening, so she was tired.", ok:true,
+   c:"Всё верно: длительность («all evening») + следствие (усталость)."},
+  {s:"By noon, he had been eating three sandwiches.", ok:false, fix:"By noon, he had eaten three sandwiches.",
+   c:"Есть количество («three sandwiches») → нужен Simple."},
+  {s:"When we arrived, the train had already left.", ok:true,
+   c:"Верно: поезд ушёл до нашего прибытия, завершённое действие → Simple."},
+  {s:"It had been snowing, so the roads were white.", ok:true,
+   c:"Верно: белые дороги — видимое доказательство длительного снегопада."},
+  {s:"They had been visiting five museums by Friday.", ok:false, fix:"They had visited five museums by Friday.",
+   c:"«five museums» — считаем результат → Simple."},
+  {s:"He had been owning that car for ten years when he sold it.", ok:false, fix:"He had owned that car for ten years when he sold it.",
+   c:"own — глагол состояния, даже с «for ten years» остаётся Simple."},
+  {s:"Had you finished your homework before the film started?", ok:true,
+   c:"Верно: вопрос о завершённости действия до другого события → Simple, had + подлежащее + V3."}
+];
+
+const EX4 = [
+  {q:"Which sentence shows that the book was finished?", o:["I had been reading the book.","I had read the book."], a:1,
+   c:"Simple (had read) показывает завершённость. Continuous говорит только о процессе — книга могла быть не дочитана."},
+  {q:"Which sentence focuses on HOW LONG?", o:["She had been cleaning for three hours.","She had cleaned three rooms."], a:0,
+   c:"Continuous + «for three hours» — фокус на длительности. Второе предложение — о результате (сколько комнат)."},
+  {q:"“When I came in, he had been painting the room.” Was the room definitely finished?", o:["Yes, definitely","Not necessarily"], a:1,
+   c:"Continuous не сообщает о завершении — может быть, он ещё не докрасил. Мы знаем только, что он этим занимался."},
+  {q:"“When I came in, he had painted the room.” Was the room finished?", o:["Yes","Not necessarily"], a:0,
+   c:"Simple (had painted) = работа закончена, результат готов к моменту моего прихода."},
+  {q:"Tim was hot and sweaty. Which sentence explains why?", o:["He had played tennis twice in his life.","He had been playing tennis."], a:1,
+   c:"Видимый признак (вспотел) объясняется длительным процессом незадолго до этого → Continuous."}
+];
+
+const state = {pts:0,total:EX1.length+EX2.length+EX3.length+EX4.length};
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function addPoint(){state.pts++;$("pts").textContent=state.pts}
+let answered=0;
+function done(){answered++; if(answered===state.total) showFinal();}
+
+function feedback(el, ok, text){
+  el.className = "fb show " + (ok?"ok":"no");
+  el.innerHTML = "<b>"+(ok?"✅ Верно!":"❌ Неверно.")+"</b>"+text;
+}
+
+function buildChoice(container, data, render){
+  data.forEach((it,i)=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML = '<div><span class="n">'+(i+1)+'.</span>'+render(it)+'</div><div class="opts"></div><div class="fb"></div>';
+    const opts=d.querySelector(".opts"), fb=d.querySelector(".fb");
+    it.o.forEach((o,k)=>{
+      const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=o;
+      b.onclick=()=>{
+        const btns=opts.querySelectorAll("button"); btns.forEach(x=>x.disabled=true);
+        btns[it.a].classList.add("right");
+        const ok=k===it.a; if(!ok) b.classList.add("wrong"); else addPoint();
+        feedback(fb, ok, (ok?"":"Правильно: <i>"+esc(it.o[it.a])+"</i>. ")+it.c);
+        done();
+      };
+      opts.appendChild(b);
+    });
+    container.appendChild(d);
+  });
+}
+
+function norm(s){
+  return s.toLowerCase().replace(/[’`]/g,"'").replace(/\s+/g," ").trim()
+          .replace(/\bhad not\b/g,"hadn't").replace(/[.!]+$/,"");
+}
+
+function buildEx2(){
+  const box=$("ex2");
+  EX2.forEach((it,i)=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML='<div><span class="n">'+(i+1)+'.</span>'+esc(it.pre)+' <span class="gap">('+esc(it.verb)+')</span> '+esc(it.post)+'</div>'+
+      '<div class="typerow"><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your answer"><button class="btn" type="button">Check</button></div><div class="fb"></div>';
+    const inp=d.querySelector("input"), btn=d.querySelector("button"), fb=d.querySelector(".fb");
+    const check=()=>{
+      if(!inp.value.trim()||btn.disabled) return;
+      const ok = it.a.map(norm).includes(norm(inp.value));
+      inp.disabled=true; btn.disabled=true;
+      inp.classList.add(ok?"right":"wrong");
+      if(ok) addPoint();
+      feedback(fb, ok, (ok?"":"Правильно: <i>"+esc(it.a[0])+"</i>. ")+it.c);
+      done();
+    };
+    btn.onclick=check;
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+    box.appendChild(d);
+  });
+}
+
+function buildEx3(){
+  const box=$("ex3");
+  EX3.forEach((it,i)=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML='<div><span class="n">'+(i+1)+'.</span><span class="ex">'+esc(it.s)+'</span></div><div class="opts"></div><div class="fb"></div>';
+    const opts=d.querySelector(".opts"), fb=d.querySelector(".fb");
+    [["✔ Right",true],["✘ Wrong",false]].forEach(([label,val])=>{
+      const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=label;
+      b.onclick=()=>{
+        const btns=opts.querySelectorAll("button"); btns.forEach(x=>x.disabled=true);
+        btns[it.ok?0:1].classList.add("right");
+        const ok=val===it.ok; if(!ok) b.classList.add("wrong"); else addPoint();
+        const fix = it.ok ? "" : "Правильно: <i>"+esc(it.fix)+"</i> ";
+        feedback(fb, ok, fix+it.c);
+        done();
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+
+function showFinal(){
+  const p=Math.round(state.pts/state.total*100);
+  let msg = p>=85 ? "Отлично! Тема усвоена." : p>=60 ? "Хорошо! Повтори правило и разбери ошибки." : "Стоит ещё раз прочитать правило и пройти тренажёр заново.";
+  const f=$("final"); f.classList.add("show");
+  f.innerHTML="<h2>Результат: "+state.pts+" / "+state.total+" ("+p+"%)</h2><p>"+msg+"</p>";
+  f.scrollIntoView({behavior:"smooth"});
+}
+
+function init(){
+  state.pts=0; answered=0; $("pts").textContent=0; $("total").textContent=state.total;
+  ["ex1","ex2","ex3","ex4"].forEach(id=>$(id).innerHTML="");
+  $("final").className="final"; $("final").innerHTML="";
+  buildChoice($("ex1"), EX1, it=>esc(it.q).replace("___",'<span class="gap">___</span>'));
+  buildEx2();
+  buildEx3();
+  buildChoice($("ex4"), EX4, it=>esc(it.q));
+}
+$("reset").onclick=()=>{init(); window.scrollTo({top:0,behavior:"smooth"})};
+init();
+</script>
+</body>
+</html>
